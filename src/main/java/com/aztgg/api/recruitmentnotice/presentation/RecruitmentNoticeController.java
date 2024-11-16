@@ -1,0 +1,36 @@
+package com.aztgg.api.recruitmentnotice.presentation;
+
+import com.aztgg.api.recruitmentnotice.application.RecruitmentNoticeService;
+import com.aztgg.api.recruitmentnotice.application.dto.GetRecruitmentNoticeRedirectionListResponseDto;
+import com.aztgg.api.recruitmentnotice.application.dto.GetRecruitmentNoticeRedirectionResponseDto;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
+import java.util.List;
+
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/v1/recruitment-notices")
+public class RecruitmentNoticeController implements RecruitmentNoticeApi {
+
+    private final RecruitmentNoticeService recruitmentNoticeService;
+
+    @Override
+    @GetMapping("/{recruitmentNoticeId}/redirect")
+    public void redirectByRecruitmentNotice(HttpServletResponse response, @PathVariable Long recruitmentNoticeId) throws IOException {
+        GetRecruitmentNoticeRedirectionResponseDto responseDto = recruitmentNoticeService.incrementViewCountAndGetRecruitmentNoticeRedirection(recruitmentNoticeId);
+        response.sendRedirect(responseDto.url());
+    }
+
+    @Override
+    @GetMapping("/redirections")
+    public GetRecruitmentNoticeRedirectionListResponseDto getRecruitmentNoticeRedirectionList(@RequestParam("companyCodes") List<String> companyCodes,
+                                                                                              @RequestParam("page") int page,
+                                                                                              @RequestParam("pageSize") int pageSize) {
+        PageRequest pageRequest = PageRequest.of(page, pageSize);
+        return recruitmentNoticeService.getRecruitmentNoticeRedirectionList(companyCodes, pageRequest);
+    }
+}
