@@ -2,7 +2,7 @@ package com.aztgg.api.recruitmentnotice.application;
 
 import com.aztgg.api.global.exception.CommonException;
 import com.aztgg.api.recruitmentnotice.application.dto.GetRecruitmentNoticeRedirectionListResponseDto;
-import com.aztgg.api.recruitmentnotice.application.dto.GetRecruitmentNoticeRedirectionResponseDto;
+import com.aztgg.api.recruitmentnotice.application.dto.GetRecruitmentNoticeDto;
 import com.aztgg.api.recruitmentnotice.domain.RecruitmentNotice;
 import com.aztgg.api.recruitmentnotice.domain.RecruitmentNoticeErrorCode;
 import com.aztgg.api.recruitmentnotice.domain.RecruitmentNoticeRepository;
@@ -20,12 +20,12 @@ public class RecruitmentNoticeService {
     private final RecruitmentNoticeRepository recruitmentNoticeRepository;
 
     @Transactional
-    public GetRecruitmentNoticeRedirectionResponseDto incrementViewCountAndGetRecruitmentNoticeRedirection(Long recruitmentNoticeId) {
+    public GetRecruitmentNoticeDto incrementViewCountAndGetRecruitmentNoticeRedirection(Long recruitmentNoticeId) {
         RecruitmentNotice recruitmentNotice = recruitmentNoticeRepository.findById(recruitmentNoticeId)
                 .orElseThrow(() -> new CommonException(RecruitmentNoticeErrorCode.BAD_REQUEST_RECRUITMENT_NOTICE_NOT_FOUND));
 
         recruitmentNotice.increaseCount();
-        return GetRecruitmentNoticeRedirectionResponseDto.from(recruitmentNotice);
+        return GetRecruitmentNoticeDto.from(recruitmentNotice);
     }
 
     @Transactional(readOnly = true)

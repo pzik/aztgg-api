@@ -2,6 +2,12 @@ spring:
   profiles:
     active: local
 
+springdoc:
+  api-docs:
+    path: /docs # 환경별 경로 보안 검토
+  swagger-ui:
+    path: /docs/index.html
+
 management:
   server:
     port: 8080
