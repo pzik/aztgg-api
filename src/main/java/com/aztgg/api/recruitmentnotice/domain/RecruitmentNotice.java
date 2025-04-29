@@ -27,8 +27,8 @@ public class RecruitmentNotice {
     @Column(name = "hash")
     private String hash;
 
-    @Column(name = "tag")
-    private String tag;
+    @Column(name = "categories")
+    private String categories;
 
     @Column(name = "url")
     private String url;
@@ -50,7 +50,7 @@ public class RecruitmentNotice {
                              String companyCode,
                              String jobOfferTitle,
                              String hash,
-                             String tag,
+                             String categories,
                              String url,
                              int clickCount,
                              LocalDateTime scrapedAt,
@@ -60,7 +60,7 @@ public class RecruitmentNotice {
         this.companyCode = companyCode;
         this.jobOfferTitle = jobOfferTitle;
         this.hash = hash;
-        this.tag = tag;
+        this.categories = categories;
         this.url = url;
         this.clickCount = clickCount;
         this.scrapedAt = scrapedAt;
