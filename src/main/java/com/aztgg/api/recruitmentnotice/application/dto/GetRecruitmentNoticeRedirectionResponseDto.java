@@ -11,6 +11,7 @@ public record GetRecruitmentNoticeRedirectionResponseDto(Long recruitmentNoticeI
                                                          String jobOfferTitle,
                                                          String companyCode,
                                                          Set<String> categories,
+                                                         int clickCount,
                                                          @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'") LocalDateTime startAt,
                                                          @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'") LocalDateTime endAt) {
 
@@ -19,6 +20,7 @@ public record GetRecruitmentNoticeRedirectionResponseDto(Long recruitmentNoticeI
                 recruitmentNotice.getJobOfferTitle(),
                 recruitmentNotice.getCompanyCode(),
                 StringUtils.commaDelimitedListToSet(recruitmentNotice.getCategories()),
+                recruitmentNotice.getClickCount(),
                 recruitmentNotice.getStartAt(),
                 recruitmentNotice.getEndAt());
     }
