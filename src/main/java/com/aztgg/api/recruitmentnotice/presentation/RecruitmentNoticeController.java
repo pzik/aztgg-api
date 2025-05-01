@@ -9,7 +9,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -27,10 +26,11 @@ public class RecruitmentNoticeController implements RecruitmentNoticeApi {
 
     @Override
     @GetMapping("/redirections")
-    public GetRecruitmentNoticeRedirectionListResponseDto getRecruitmentNoticeRedirectionList(@RequestParam("companyCodes") List<String> companyCodes,
+    public GetRecruitmentNoticeRedirectionListResponseDto getRecruitmentNoticeRedirectionList(@RequestParam("companyCode") String companyCode,
+                                                                                              @RequestParam(value = "category", required = false) String category,
                                                                                               @RequestParam("page") int page,
                                                                                               @RequestParam("pageSize") int pageSize) {
         PageRequest pageRequest = PageRequest.of(page, pageSize);
-        return recruitmentNoticeService.getRecruitmentNoticeRedirectionList(companyCodes, pageRequest);
+        return recruitmentNoticeService.getRecruitmentNoticeRedirectionList(companyCode, category, pageRequest);
     }
 }

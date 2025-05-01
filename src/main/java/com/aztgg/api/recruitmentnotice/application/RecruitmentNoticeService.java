@@ -10,8 +10,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -29,9 +31,10 @@ public class RecruitmentNoticeService {
     }
 
     @Transactional(readOnly = true)
-    public GetRecruitmentNoticeRedirectionListResponseDto getRecruitmentNoticeRedirectionList(List<String> companyCodes,
+    public GetRecruitmentNoticeRedirectionListResponseDto getRecruitmentNoticeRedirectionList(String companyCode,
+                                                                                              String category,
                                                                                               PageRequest pageRequest) {
-        List<RecruitmentNotice> result = recruitmentNoticeRepository.findByCompanyCodeInOrderByStartAtDesc(companyCodes, pageRequest)
+        List<RecruitmentNotice> result = recruitmentNoticeRepository.findByCompanyCodeAndCategoryLikeInOrderByStartAtDesc(companyCode, category, pageRequest)
                 .getContent();
         return GetRecruitmentNoticeRedirectionListResponseDto.from(result);
     }
