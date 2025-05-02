@@ -12,6 +12,7 @@ public enum PredefinedCompany {
     WOOWAHAN("배달의민족", "배달의민족"),
     TOSS("토스", "토스"),
     LINE("라인", "라인"),
+    DAANGN("당근", "당근"),
     ;
 
     private final String korean;
