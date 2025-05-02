@@ -29,6 +29,7 @@ public class SecurityConfig {
     private CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowedOrigins(List.of("http://localhost:8080",
+                "http://localhost:3000",
                 "https://api.nklcb.kr",
                 "https://www.nklcb.kr",
                 "https://nklcb.kr"));
