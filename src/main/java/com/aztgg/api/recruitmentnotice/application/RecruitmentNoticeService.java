@@ -7,13 +7,10 @@ import com.aztgg.api.recruitmentnotice.domain.RecruitmentNotice;
 import com.aztgg.api.recruitmentnotice.domain.RecruitmentNoticeErrorCode;
 import com.aztgg.api.recruitmentnotice.domain.RecruitmentNoticeRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
-
-import java.util.List;
-import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -34,8 +31,7 @@ public class RecruitmentNoticeService {
     public GetRecruitmentNoticeRedirectionListResponseDto getRecruitmentNoticeRedirectionList(String companyCode,
                                                                                               String category,
                                                                                               PageRequest pageRequest) {
-        List<RecruitmentNotice> result = recruitmentNoticeRepository.findByCompanyCodeAndCategoryLikeInOrderByStartAtDesc(companyCode, category, pageRequest)
-                .getContent();
+        Page<RecruitmentNotice> result = recruitmentNoticeRepository.findByCompanyCodeAndCategoryLikeInOrderByStartAtDesc(companyCode, category, pageRequest);
         return GetRecruitmentNoticeRedirectionListResponseDto.from(result);
     }
 }

@@ -1,17 +1,25 @@
 package com.aztgg.api.recruitmentnotice.application.dto;
 
 import com.aztgg.api.recruitmentnotice.domain.RecruitmentNotice;
+import org.springframework.data.domain.Page;
 
 import java.util.Collection;
 import java.util.List;
 
-public record GetRecruitmentNoticeRedirectionListResponseDto(List<GetRecruitmentNoticeRedirectionResponseDto> list) {
+public record GetRecruitmentNoticeRedirectionListResponseDto(List<GetRecruitmentNoticeRedirectionResponseDto> list,
+                                                             MetadataDto metadata) {
 
-    public static GetRecruitmentNoticeRedirectionListResponseDto from(Collection<RecruitmentNotice> recruitmentNotices) {
-        List<GetRecruitmentNoticeRedirectionResponseDto> list = recruitmentNotices.stream()
+    public record MetadataDto(long totalElements) {
+
+    }
+
+    public static GetRecruitmentNoticeRedirectionListResponseDto from(Page<RecruitmentNotice> page) {
+        List<GetRecruitmentNoticeRedirectionResponseDto> list = page.getContent().stream()
                 .map(GetRecruitmentNoticeRedirectionResponseDto::from)
                 .toList();
 
-        return new GetRecruitmentNoticeRedirectionListResponseDto(list);
+        MetadataDto metadataDto = new MetadataDto(page.getTotalElements());
+
+        return new GetRecruitmentNoticeRedirectionListResponseDto(list, metadataDto);
     }
 }
