@@ -21,7 +21,7 @@ public record GetRecruitmentNoticeRedirectionResponseDto(Long recruitmentNoticeI
     public static GetRecruitmentNoticeRedirectionResponseDto from(RecruitmentNotice recruitmentNotice) {
         String companyName;
         try {
-            companyName = PredefinedCompany.valueOf(recruitmentNotice.getCompanyCode()).name();
+            companyName = PredefinedCompany.valueOf(recruitmentNotice.getCompanyCode()).getKorean();
         } catch (Exception e) {
             companyName = CompanyConstants.UNKNOWN_NAME;
         }
