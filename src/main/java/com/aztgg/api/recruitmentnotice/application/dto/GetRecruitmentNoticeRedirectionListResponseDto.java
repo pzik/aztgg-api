@@ -3,7 +3,6 @@ package com.aztgg.api.recruitmentnotice.application.dto;
 import com.aztgg.api.recruitmentnotice.domain.RecruitmentNotice;
 import org.springframework.data.domain.Page;
 
-import java.util.Collection;
 import java.util.List;
 
 public record GetRecruitmentNoticeRedirectionListResponseDto(List<GetRecruitmentNoticeRedirectionResponseDto> list,
