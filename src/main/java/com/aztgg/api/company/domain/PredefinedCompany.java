@@ -22,6 +22,10 @@ public enum PredefinedCompany {
 
     private final String korean;
 
+    public static boolean isNotUnknown(PredefinedCompany predefinedCompany) {
+        return !predefinedCompany.equals(UNKNOWN);
+    }
+
     public static PredefinedCompany fromCode(String code) {
         for (var value : values()) {
             if (value.name().equals(code)) {

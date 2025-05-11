@@ -23,6 +23,7 @@ public class CompanyService {
 
     public GetCompaniesResponseDto getCompanies() {
         List<GetCompaniesResponseDto.GetCompaniesItemDto> list = Arrays.stream(PredefinedCompany.values())
+                .filter(PredefinedCompany::isNotUnknown)
                 .map(company -> new GetCompaniesResponseDto.GetCompaniesItemDto(company.name(), company.getKorean()))
                 .collect(Collectors.toList());
 
