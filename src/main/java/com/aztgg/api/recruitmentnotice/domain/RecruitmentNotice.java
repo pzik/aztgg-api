@@ -30,6 +30,9 @@ public class RecruitmentNotice {
     @Column(name = "categories")
     private String categories;
 
+    @Column(name = "corporateCodes")
+    private String corporateCodes;
+
     @Column(name = "url")
     private String url;
 
@@ -51,6 +54,7 @@ public class RecruitmentNotice {
                              String jobOfferTitle,
                              String hash,
                              String categories,
+                             String corporateCodes,
                              String url,
                              int clickCount,
                              LocalDateTime scrapedAt,
@@ -61,14 +65,11 @@ public class RecruitmentNotice {
         this.jobOfferTitle = jobOfferTitle;
         this.hash = hash;
         this.categories = categories;
+        this.corporateCodes = corporateCodes;
         this.url = url;
         this.clickCount = clickCount;
         this.scrapedAt = scrapedAt;
         this.startAt = startAt;
         this.endAt = endAt;
-    }
-
-    public void increaseCount() {
-        this.clickCount++;
     }
 }
