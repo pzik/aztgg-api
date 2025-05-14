@@ -35,6 +35,12 @@ public enum Corporate {
     KAKAO("KAKAO", PredefinedCompany.KAKAO, "카카오"),
     KAKAO_BANK("KAKAO_BANK", PredefinedCompany.KAKAO, "카카오뱅크"),
 
+    // 카카오 그리팅 사용
+    KAKAO_MOBILITY("KAKAO_MOBILITY", PredefinedCompany.KAKAO, "카카오모빌리티"),
+    KAKAO_PAY("KAKAO_PAY", PredefinedCompany.KAKAO, "카카오페이"),
+    KAKAO_ENTERPRISE("KAKAO_ENTERPRISE", PredefinedCompany.KAKAO, "카카오엔터프라이즈"),
+    KAKAO_GAMES("KAKAO_GAMES", PredefinedCompany.KAKAO, "카카오게임즈"),
+
     // 라인
     LINE_PLUS("LINE Plus", PredefinedCompany.LINE, "LINE Plus"),
     LINE_FINANCIAL("LINE Financial Corp.", PredefinedCompany.LINE, "LINE Financial Corp."),
