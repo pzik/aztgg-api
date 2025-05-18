@@ -37,7 +37,7 @@ public class RecruitmentNoticeController implements RecruitmentNoticeApi {
 
     @Override
     @GetMapping("/redirections/daily-rank")
-    public GetRecruitmentNoticeRedirectionsByRankDto getRecruitmentNoticeRedirectionListByRank(String date) {
+    public GetRecruitmentNoticeRedirectionsByRankDto getRecruitmentNoticeRedirectionListByRank(@RequestParam("date") String date) {
         return recruitmentNoticeService.getRecruitmentNoticeRedirectionsByRank(date);
     }
 
