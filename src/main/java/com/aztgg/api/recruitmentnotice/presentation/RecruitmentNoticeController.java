@@ -3,6 +3,7 @@ package com.aztgg.api.recruitmentnotice.presentation;
 import com.aztgg.api.recruitmentnotice.application.RecruitmentNoticeService;
 import com.aztgg.api.recruitmentnotice.application.dto.GetRecruitmentNoticeRedirectionListRequestDto;
 import com.aztgg.api.recruitmentnotice.application.dto.GetRecruitmentNoticeRedirectionListResponseDto;
+import com.aztgg.api.recruitmentnotice.application.dto.GetRecruitmentNoticeRedirectionsByRankDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +33,12 @@ public class RecruitmentNoticeController implements RecruitmentNoticeApi {
                 .sort(sort)
                 .build();
         return recruitmentNoticeService.getRecruitmentNoticeRedirectionList(requestDto);
+    }
+
+    @Override
+    @GetMapping("/redirections/daily-rank")
+    public GetRecruitmentNoticeRedirectionsByRankDto getRecruitmentNoticeRedirectionListByRank(String date) {
+        return recruitmentNoticeService.getRecruitmentNoticeRedirectionsByRank(date);
     }
 
     @Override
