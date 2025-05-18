@@ -4,11 +4,15 @@ import com.aztgg.api.recruitmentnotice.domain.QRecruitmentNotice;
 import com.aztgg.api.recruitmentnotice.domain.RecruitmentNotice;
 import com.aztgg.api.recruitmentnotice.domain.RecruitmentNoticeCustomRepository;
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.Order;
+import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
 
@@ -26,7 +30,7 @@ public class RecruitmentNoticeRepositoryImpl extends QuerydslRepositorySupport i
     }
 
     @Override
-    public Page<RecruitmentNotice> findByCompanyCodeAndCategoryLikeInOrderByStartAtDesc(String companyCode, String category, Pageable pageable) {
+    public Page<RecruitmentNotice> findByCompanyCodeAndCategoryLikeIn(String companyCode, String category, Pageable pageable) {
         QRecruitmentNotice qRecruitmentNotice = QRecruitmentNotice.recruitmentNotice;
 
         // where build
@@ -57,11 +61,24 @@ public class RecruitmentNoticeRepositoryImpl extends QuerydslRepositorySupport i
         List<Long> pagingIds = Objects.requireNonNull(getQuerydsl())
                 .applyPagination(pageable, pagingIdsQuery)
                 .fetch();
-        List<RecruitmentNotice> result = jpaQueryFactory.select(qRecruitmentNotice)
+
+        JPAQuery<RecruitmentNotice> query = jpaQueryFactory.select(qRecruitmentNotice)
                 .from(qRecruitmentNotice)
-                .where(qRecruitmentNotice.recruitmentNoticeId.in(pagingIds))
-                .orderBy(qRecruitmentNotice.startAt.desc())
-                .fetch();
-        return new PageImpl<>(result, pageable, totalCount);
+                .where(qRecruitmentNotice.recruitmentNoticeId.in(pagingIds));
+
+        // 정렬 조건 적용
+        addOrderBy(qRecruitmentNotice, query, pageable.getSort());
+
+        return new PageImpl<>(query.fetch(), pageable, totalCount);
+    }
+
+    private void addOrderBy(QRecruitmentNotice qRecruitmentNotice, JPAQuery<RecruitmentNotice> query, Sort sort) {
+        for (Sort.Order order : sort) {
+            PathBuilder pathBuilder = new PathBuilder(RecruitmentNotice.class, qRecruitmentNotice.getMetadata().getName());
+            query.orderBy(new OrderSpecifier<>(
+                    order.isAscending() ? Order.ASC : Order.DESC,
+                    pathBuilder.get(order.getProperty())
+            ));
+        }
     }
 }

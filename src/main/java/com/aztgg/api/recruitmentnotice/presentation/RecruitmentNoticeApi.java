@@ -7,6 +7,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
+import java.util.List;
+
 @Tag(name = "RecruitmentNotice", description = "채용공고 API")
 @ApiResponses(value = {
         @ApiResponse(
@@ -36,7 +38,8 @@ public interface RecruitmentNoticeApi {
     GetRecruitmentNoticeRedirectionListResponseDto getRecruitmentNoticeRedirectionList(String companyCode,
                                                                                        String category,
                                                                                        int page,
-                                                                                       int pageSize);
+                                                                                       int pageSize,
+                                                                                       List<String> sort);
 
     @Operation(tags = {"RecruitmentNotice"}, summary = "RecruitmentNotice 클릭 카운팅", description = """
             ## API 설명

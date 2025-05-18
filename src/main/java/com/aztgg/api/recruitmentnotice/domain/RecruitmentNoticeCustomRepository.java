@@ -5,5 +5,5 @@ import org.springframework.data.domain.Pageable;
 
 public interface RecruitmentNoticeCustomRepository {
 
-    Page<RecruitmentNotice> findByCompanyCodeAndCategoryLikeInOrderByStartAtDesc(String companyCode, String category, Pageable pageable);
+    Page<RecruitmentNotice> findByCompanyCodeAndCategoryLikeIn(String companyCode, String category, Pageable pageable);
 }

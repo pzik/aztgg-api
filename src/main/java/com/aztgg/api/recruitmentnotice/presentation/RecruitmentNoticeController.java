@@ -1,11 +1,13 @@
 package com.aztgg.api.recruitmentnotice.presentation;
 
 import com.aztgg.api.recruitmentnotice.application.RecruitmentNoticeService;
+import com.aztgg.api.recruitmentnotice.application.dto.GetRecruitmentNoticeRedirectionListRequestDto;
 import com.aztgg.api.recruitmentnotice.application.dto.GetRecruitmentNoticeRedirectionListResponseDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -16,12 +18,20 @@ public class RecruitmentNoticeController implements RecruitmentNoticeApi {
 
     @Override
     @GetMapping("/redirections")
-    public GetRecruitmentNoticeRedirectionListResponseDto getRecruitmentNoticeRedirectionList(@RequestParam("companyCode") String companyCode,
+    public GetRecruitmentNoticeRedirectionListResponseDto getRecruitmentNoticeRedirectionList(@RequestParam(value = "companyCode", required = false) String companyCode,
                                                                                               @RequestParam(value = "category", required = false) String category,
                                                                                               @RequestParam("page") int page,
-                                                                                              @RequestParam("pageSize") int pageSize) {
-        PageRequest pageRequest = PageRequest.of(page, pageSize);
-        return recruitmentNoticeService.getRecruitmentNoticeRedirectionList(companyCode, category, pageRequest);
+                                                                                              @RequestParam("pageSize") int pageSize,
+                                                                                              @RequestParam(value = "sort", defaultValue = "startAt,desc") List<String> sort) {
+
+        GetRecruitmentNoticeRedirectionListRequestDto requestDto = GetRecruitmentNoticeRedirectionListRequestDto.builder()
+                .category(category)
+                .companyCode(companyCode)
+                .page(page)
+                .pageSize(pageSize)
+                .sort(sort)
+                .build();
+        return recruitmentNoticeService.getRecruitmentNoticeRedirectionList(requestDto);
     }
 
     @Override
