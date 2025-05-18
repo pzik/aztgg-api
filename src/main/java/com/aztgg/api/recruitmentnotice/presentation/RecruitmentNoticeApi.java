@@ -1,6 +1,7 @@
 package com.aztgg.api.recruitmentnotice.presentation;
 
 import com.aztgg.api.recruitmentnotice.application.dto.GetRecruitmentNoticeRedirectionListResponseDto;
+import com.aztgg.api.recruitmentnotice.application.dto.GetRecruitmentNoticeRedirectionsByRankDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -28,7 +29,7 @@ public interface RecruitmentNoticeApi {
             ## API 설명
             RecruitmentNotice 목록을 조회합니다.
             대상 companyCode 내 category에 해당하는 목록을 조회합니다.
-            cateogry 필드는 선택입니다.
+            companyCode, cateogry, order 필드는 선택입니다.
             """)
     @ApiResponses(value = {
             @ApiResponse(
@@ -40,6 +41,20 @@ public interface RecruitmentNoticeApi {
                                                                                        int page,
                                                                                        int pageSize,
                                                                                        List<String> sort);
+
+    @Operation(tags = {"RecruitmentNotice"}, summary = "RecruitmentNotice 데일리 클릭 랭크 순으로 조회", description = """
+            ## API 설명
+            RecruitmentNotice 목록을 카운트가 높은 순부터 차례대로 조회합니다. (인기순)
+            
+            파라미터 포맷은 `yyyy-MM-dd` 입니다.
+            """)
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "OK"),
+    })
+    GetRecruitmentNoticeRedirectionsByRankDto getRecruitmentNoticeRedirectionListByRank(String date);
+
 
     @Operation(tags = {"RecruitmentNotice"}, summary = "RecruitmentNotice 클릭 카운팅", description = """
             ## API 설명

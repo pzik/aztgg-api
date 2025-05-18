@@ -72,4 +72,8 @@ public class RecruitmentNotice {
         this.startAt = startAt;
         this.endAt = endAt;
     }
+
+    public void increaseClickCount() {
+        this.clickCount++;
+    }
 }

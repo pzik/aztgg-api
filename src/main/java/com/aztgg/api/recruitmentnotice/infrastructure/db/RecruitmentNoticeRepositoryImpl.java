@@ -14,19 +14,31 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.CollectionUtils;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Repository
 public class RecruitmentNoticeRepositoryImpl extends QuerydslRepositorySupport implements RecruitmentNoticeCustomRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
+    private final StringRedisTemplate stringRedisTemplate;
 
-    public RecruitmentNoticeRepositoryImpl(JPAQueryFactory jpaQueryFactory) {
+    private static final String DAILY_NOTICE_CLICK_COUNT = "dclick:%s";
+
+    public RecruitmentNoticeRepositoryImpl(JPAQueryFactory jpaQueryFactory, StringRedisTemplate stringRedisTemplate) {
         super(RecruitmentNotice.class);
         this.jpaQueryFactory = jpaQueryFactory;
+        this.stringRedisTemplate = stringRedisTemplate;
     }
 
     @Override
@@ -70,6 +82,31 @@ public class RecruitmentNoticeRepositoryImpl extends QuerydslRepositorySupport i
         addOrderBy(qRecruitmentNotice, query, pageable.getSort());
 
         return new PageImpl<>(query.fetch(), pageable, totalCount);
+    }
+
+    @Override
+    public void increaseDailyNoticeClickCount(Long recruitmentNoticeId, LocalDateTime localDateTime) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String formattedDate = localDateTime.format(formatter);
+        String key = String.format(DAILY_NOTICE_CLICK_COUNT, formattedDate);
+
+        stringRedisTemplate.opsForZSet().incrementScore(key, String.valueOf(recruitmentNoticeId), 1);
+
+        // TTL 설정 (마지막 호출일자로부터 1주일간 무조건 설정)
+        stringRedisTemplate.expire(key, Duration.ofDays(7));
+    }
+
+    @Override
+    public List<Long> getRecruitmentNoticesByDailyRank(String date, int size) {
+        String key = String.format(DAILY_NOTICE_CLICK_COUNT, date);
+
+        Set<String> ids = stringRedisTemplate.opsForZSet().reverseRange(key, 0, size - 1);
+
+        if (CollectionUtils.isEmpty(ids)) {
+            return new ArrayList<>();
+        }
+
+        return ids.stream().map(Long::parseLong).collect(Collectors.toList());
     }
 
     private void addOrderBy(QRecruitmentNotice qRecruitmentNotice, JPAQuery<RecruitmentNotice> query, Sort sort) {
