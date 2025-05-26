@@ -2,6 +2,7 @@ package com.aztgg.api.company.presentation;
 
 import com.aztgg.api.company.application.dto.GetCompanyCategoriesByCodeResponseDto;
 import com.aztgg.api.company.application.dto.GetCompaniesResponseDto;
+import com.aztgg.api.company.application.dto.GetStandardCategoriesResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -44,4 +45,15 @@ public interface CompanyApi {
                         description = "OK"),
         })
         GetCompanyCategoriesByCodeResponseDto getCompanyCategoriesByCode(String companyCode);
+
+        @Operation(tags = {"Company"}, summary = "정형화 카테고리 목록 조회", description = """
+            ## API 설명
+            정형화된 카테고리 목록을 조회합니다.
+            """)
+        @ApiResponses(value = {
+                @ApiResponse(
+                        responseCode = "200",
+                        description = "OK"),
+        })
+        GetStandardCategoriesResponseDto getStandardCategories();
 }

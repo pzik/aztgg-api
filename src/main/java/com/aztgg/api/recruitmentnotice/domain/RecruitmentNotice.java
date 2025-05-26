@@ -30,6 +30,9 @@ public class RecruitmentNotice {
     @Column(name = "categories")
     private String categories;
 
+    @Column(name = "standardCategory")
+    private String standardCategory;
+
     @Column(name = "corporateCodes")
     private String corporateCodes;
 
@@ -54,6 +57,7 @@ public class RecruitmentNotice {
                              String jobOfferTitle,
                              String hash,
                              String categories,
+                             String standardCategory,
                              String corporateCodes,
                              String url,
                              int clickCount,
@@ -65,6 +69,7 @@ public class RecruitmentNotice {
         this.jobOfferTitle = jobOfferTitle;
         this.hash = hash;
         this.categories = categories;
+        this.standardCategory = standardCategory;
         this.corporateCodes = corporateCodes;
         this.url = url;
         this.clickCount = clickCount;

@@ -2,7 +2,9 @@ package com.aztgg.api.company.application;
 
 import com.aztgg.api.company.application.dto.GetCompanyCategoriesByCodeResponseDto;
 import com.aztgg.api.company.application.dto.GetCompaniesResponseDto;
+import com.aztgg.api.company.application.dto.GetStandardCategoriesResponseDto;
 import com.aztgg.api.company.domain.PredefinedCompany;
+import com.aztgg.api.company.domain.StandardCategory;
 import com.aztgg.api.recruitmentnotice.domain.RecruitmentNotice;
 import com.aztgg.api.recruitmentnotice.domain.RecruitmentNoticeRepository;
 import lombok.RequiredArgsConstructor;
@@ -37,5 +39,13 @@ public class CompanyService {
                 .flatMap(a -> StringUtils.commaDelimitedListToSet(a).stream())
                 .collect(Collectors.toSet());
         return new GetCompanyCategoriesByCodeResponseDto(categories);
+    }
+
+    public GetStandardCategoriesResponseDto getStandardCategories() {
+        List<GetStandardCategoriesResponseDto.GetStandardCategoriesResponseItemDto> list = Arrays.stream(StandardCategory.values())
+                .map(GetStandardCategoriesResponseDto.GetStandardCategoriesResponseItemDto::from)
+                .toList();
+
+        return new GetStandardCategoriesResponseDto(list);
     }
 }

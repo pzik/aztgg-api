@@ -3,6 +3,7 @@ package com.aztgg.api.company.presentation;
 import com.aztgg.api.company.application.CompanyService;
 import com.aztgg.api.company.application.dto.GetCompanyCategoriesByCodeResponseDto;
 import com.aztgg.api.company.application.dto.GetCompaniesResponseDto;
+import com.aztgg.api.company.application.dto.GetStandardCategoriesResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,5 +27,11 @@ public class CompanyController implements CompanyApi {
     @GetMapping("/{companyCode}/categories")
     public GetCompanyCategoriesByCodeResponseDto getCompanyCategoriesByCode(@PathVariable String companyCode) {
         return companyService.getCompanyCategoriesByCode(companyCode);
+    }
+
+    @Override
+    @GetMapping("/standard-categories")
+    public GetStandardCategoriesResponseDto getStandardCategories() {
+        return companyService.getStandardCategories();
     }
 }
