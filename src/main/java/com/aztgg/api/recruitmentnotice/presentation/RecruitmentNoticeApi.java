@@ -1,5 +1,7 @@
 package com.aztgg.api.recruitmentnotice.presentation;
 
+import com.aztgg.api.recruitmentnotice.application.dto.CreateHotIssueCommentByRecruitmentNoticeIdFacadeRequestDto;
+import com.aztgg.api.recruitmentnotice.application.dto.GetHotIssueByNoticeIdFacadeResponseDto;
 import com.aztgg.api.recruitmentnotice.application.dto.GetRecruitmentNoticeRedirectionListResponseDto;
 import com.aztgg.api.recruitmentnotice.application.dto.GetRecruitmentNoticeRedirectionsByRankDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -9,6 +11,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
 
 import java.io.IOException;
 import java.util.List;
@@ -81,4 +84,26 @@ public interface RecruitmentNoticeApi {
                     description = "OK"),
     })
     void incrementClickCountByRecruitmentNoticeId(Long recruitmentNoticeId);
+
+    @Operation(tags = {"RecruitmentNotice"}, summary = "RecruitmentNotice 식별자로 핫이슈 코멘트 생성", description = """
+            ## API 설명
+            RecruitmentNoticeId를 이용해 핫이슈에 코멘트를 답니다.
+            """)
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "OK"),
+    })
+    void createHotIssueCommentByRecruitmentNoticeId(HttpServletRequest httpServletRequest, Long recruitmentNoticeId, CreateHotIssueCommentByRecruitmentNoticeIdFacadeRequestDto payload);
+
+    @Operation(tags = {"RecruitmentNotice"}, summary = "RecruitmentNotice 식별자로 핫이슈 코멘트 목록 조회", description = """
+            ## API 설명
+            RecruitmentNoticeId를 이용해 핫이슈 코멘트 목록을 조회합니다.
+            """)
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "OK"),
+    })
+    GetHotIssueByNoticeIdFacadeResponseDto getHotIssueByNoticeId(Long recruitmentNoticeId);
 }
