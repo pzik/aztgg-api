@@ -34,7 +34,7 @@ public class RecruitmentNoticeService {
     @Transactional(readOnly = true)
     public GetRecruitmentNoticeRedirectionListResponseDto getRecruitmentNoticeRedirectionList(GetRecruitmentNoticeRedirectionListRequestDto request) {
         PageRequest pageRequest = PageRequest.of(request.page(), request.pageSize(), Sort.by(Sort.Direction.fromString(request.sort().get(1)), request.sort().get(0)));
-        Page<RecruitmentNotice> result = recruitmentNoticeRepository.findByCompanyCodeAndCategoryLikeIn(request.companyCode(), request.category(), pageRequest);
+        Page<RecruitmentNotice> result = recruitmentNoticeRepository.findByCompanyCodeLikeAndCategoryInAndStandardCategoryLike(request.companyCode(), request.category(), request.standardCategory(), pageRequest);
         return GetRecruitmentNoticeRedirectionListResponseDto.from(result);
     }
 

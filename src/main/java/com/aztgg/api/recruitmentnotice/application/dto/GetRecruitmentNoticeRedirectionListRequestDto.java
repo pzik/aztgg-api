@@ -9,6 +9,7 @@ import java.util.List;
 
 public record GetRecruitmentNoticeRedirectionListRequestDto(String companyCode,
                                                             String category,
+                                                            String standardCategory,
                                                             int page,
                                                             int pageSize,
                                                             List<String> sort) {

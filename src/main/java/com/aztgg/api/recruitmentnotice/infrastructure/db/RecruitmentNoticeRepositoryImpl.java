@@ -42,7 +42,7 @@ public class RecruitmentNoticeRepositoryImpl extends QuerydslRepositorySupport i
     }
 
     @Override
-    public Page<RecruitmentNotice> findByCompanyCodeAndCategoryLikeIn(String companyCode, String category, Pageable pageable) {
+    public Page<RecruitmentNotice> findByCompanyCodeLikeAndCategoryInAndStandardCategoryLike(String companyCode, String category, String standardCategory, Pageable pageable) {
         QRecruitmentNotice qRecruitmentNotice = QRecruitmentNotice.recruitmentNotice;
 
         // where build
@@ -56,6 +56,11 @@ public class RecruitmentNoticeRepositoryImpl extends QuerydslRepositorySupport i
         // category 조회
         if (Objects.nonNull(category)) {
             whereBooleanBuilder.and(qRecruitmentNotice.categories.contains(category));
+        }
+
+        // standardCategory 조회
+        if (Objects.nonNull(standardCategory)) {
+            whereBooleanBuilder.and(qRecruitmentNotice.standardCategory.contains(standardCategory));
         }
 
         // 페이징 관련 //

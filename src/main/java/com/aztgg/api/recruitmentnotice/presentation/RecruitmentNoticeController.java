@@ -21,12 +21,14 @@ public class RecruitmentNoticeController implements RecruitmentNoticeApi {
     @GetMapping("/redirections")
     public GetRecruitmentNoticeRedirectionListResponseDto getRecruitmentNoticeRedirectionList(@RequestParam(value = "companyCode", required = false) String companyCode,
                                                                                               @RequestParam(value = "category", required = false) String category,
+                                                                                              @RequestParam(value = "standardCategory", required = false) String standardCategory,
                                                                                               @RequestParam("page") int page,
                                                                                               @RequestParam("pageSize") int pageSize,
                                                                                               @RequestParam(value = "sort", defaultValue = "startAt,desc") List<String> sort) {
 
         GetRecruitmentNoticeRedirectionListRequestDto requestDto = GetRecruitmentNoticeRedirectionListRequestDto.builder()
                 .category(category)
+                .standardCategory(standardCategory)
                 .companyCode(companyCode)
                 .page(page)
                 .pageSize(pageSize)

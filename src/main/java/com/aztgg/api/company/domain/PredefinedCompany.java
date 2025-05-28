@@ -13,11 +13,11 @@ public enum PredefinedCompany {
     UNKNOWN("알수없음"),
     NAVER("네이버"),
     KAKAO("카카오"),
-    WOOWAHAN("배달의민족"),
-    TOSS("토스"),
     LINE("라인"),
-    DAANGN("당근"),
     COUPANG("쿠팡"),
+    WOOWAHAN("배달의민족"),
+    DAANGN("당근"),
+    TOSS("토스"),
     ;
 
     private final String korean;

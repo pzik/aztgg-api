@@ -38,6 +38,7 @@ public interface RecruitmentNoticeApi {
     })
     GetRecruitmentNoticeRedirectionListResponseDto getRecruitmentNoticeRedirectionList(String companyCode,
                                                                                        String category,
+                                                                                       String standardCategory,
                                                                                        int page,
                                                                                        int pageSize,
                                                                                        List<String> sort);

@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface RecruitmentNoticeCustomRepository {
 
-    Page<RecruitmentNotice> findByCompanyCodeAndCategoryLikeIn(String companyCode, String category, Pageable pageable);
+    Page<RecruitmentNotice> findByCompanyCodeLikeAndCategoryInAndStandardCategoryLike(String companyCode, String category, String standardCategory, Pageable pageable);
 
     void increaseDailyNoticeClickCount(Long recruitmentNoticeId, LocalDateTime localDateTime);
 
