@@ -1,5 +1,8 @@
 package com.aztgg.api.subscribeemail.application;
 
+import com.aztgg.api.company.domain.StandardCategory;
+import com.aztgg.api.global.exception.CommonErrorCode;
+import com.aztgg.api.global.exception.CommonException;
 import com.aztgg.api.subscribeemail.application.dto.CreateSubscribeEmailRequestDto;
 import com.aztgg.api.subscribeemail.domain.SubscribeEmail;
 import com.aztgg.api.subscribeemail.domain.SubscribeEmailCategory;
@@ -25,12 +28,17 @@ public class SubscribeEmailService {
                 .email(payload.email())
                 .build();
 
-        for (var category : payload.categories()) {
-            SubscribeEmailCategory subscribeEmailCategory = SubscribeEmailCategory.builder()
-                    .category(category)
-                    .build();
+        for (var category : payload.standardCategories()) {
+            try {
+                StandardCategory standardCategory = StandardCategory.valueOf(category);
+                SubscribeEmailCategory subscribeEmailCategory = SubscribeEmailCategory.builder()
+                        .category(standardCategory.name())
+                        .build();
 
-            subscribeEmail.addCategory(subscribeEmailCategory);
+                subscribeEmail.addCategory(subscribeEmailCategory);
+            } catch (IllegalArgumentException e) {
+                throw new CommonException(CommonErrorCode.BAD_REQUEST, "invalid standardCategory");
+            }
         }
 
         subscribeEmailRepository.save(subscribeEmail);

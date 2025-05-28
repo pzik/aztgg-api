@@ -11,6 +11,6 @@ public record CreateSubscribeEmailRequestDto(
         @Email(message = "이메일 형식이 올바르지 않습니다.")
         String email,
 
-        @NotEmpty(message = "category 는 1개 이상이어야 합니다")
-        Set<String> categories) {
+        @NotEmpty(message = "standard-category 는 1개 이상이어야 합니다")
+        Set<String> standardCategories) {
 }
