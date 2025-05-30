@@ -3,6 +3,7 @@ package com.aztgg.api.recruitmentnotice.application;
 import com.aztgg.api.global.exception.CommonErrorCode;
 import com.aztgg.api.global.exception.CommonException;
 import com.aztgg.api.hotissue.application.HotIssueService;
+import com.aztgg.api.recruitmentnotice.application.dto.CreateHotIssueCommentByRecruitmentNoticeIdRequestDto;
 import com.aztgg.api.recruitmentnotice.application.dto.GetRecruitmentNoticeResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,7 @@ public class RecruitmentNoticeFacadeService {
     private final HotIssueService hotIssueService;
     private final RecruitmentNoticeService recruitmentNoticeService;
 
-    public void createComment(Long recruitmentNoticeId, String ip, String content) {
+    public void createComment(Long recruitmentNoticeId, String ip, CreateHotIssueCommentByRecruitmentNoticeIdRequestDto payload) {
         if (!StringUtils.hasText(ip)) {
             throw new CommonException(CommonErrorCode.BAD_REQUEST, "invalid ip");
         }
@@ -28,6 +29,7 @@ public class RecruitmentNoticeFacadeService {
             throw new CommonException(CommonErrorCode.BAD_REQUEST, "invalid recruitmentNoticeId");
         }
 
-        hotIssueService.commentToRecruitmentNotice(recruitmentNoticeId, ip, content);
+        hotIssueService.commentToRecruitmentNotice(recruitmentNoticeId, ip, payload.content());
     }
+    // TODO : 조회 기능 필요
 }

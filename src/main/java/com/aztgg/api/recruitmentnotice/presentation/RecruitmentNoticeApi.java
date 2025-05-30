@@ -1,5 +1,6 @@
 package com.aztgg.api.recruitmentnotice.presentation;
 
+import com.aztgg.api.recruitmentnotice.application.dto.CreateHotIssueCommentByRecruitmentNoticeIdRequestDto;
 import com.aztgg.api.recruitmentnotice.application.dto.GetRecruitmentNoticeRedirectionListResponseDto;
 import com.aztgg.api.recruitmentnotice.application.dto.GetRecruitmentNoticeRedirectionsByRankDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -7,6 +8,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.List;
 
@@ -67,4 +69,15 @@ public interface RecruitmentNoticeApi {
                     description = "OK"),
     })
     void incrementClickCountByRecruitmentNoticeId(Long recruitmentNoticeId);
+
+    @Operation(tags = {"RecruitmentNotice"}, summary = "RecruitmentNotice 식별자로 핫이슈 코멘트 생성", description = """
+            ## API 설명
+            RecruitmentNoticeId를 이용해 공고 클릭 카운트 수를 증가시킵니다.
+            """)
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "OK"),
+    })
+    void createHotIssueCommentByRecruitmentNoticeId(HttpServletRequest httpServletRequest, Long recruitmentNoticeId, CreateHotIssueCommentByRecruitmentNoticeIdRequestDto payload);
 }

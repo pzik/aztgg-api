@@ -1,9 +1,13 @@
 package com.aztgg.api.recruitmentnotice.presentation;
 
+import com.aztgg.api.recruitmentnotice.application.RecruitmentNoticeFacadeService;
 import com.aztgg.api.recruitmentnotice.application.RecruitmentNoticeService;
+import com.aztgg.api.recruitmentnotice.application.dto.CreateHotIssueCommentByRecruitmentNoticeIdRequestDto;
 import com.aztgg.api.recruitmentnotice.application.dto.GetRecruitmentNoticeRedirectionListRequestDto;
 import com.aztgg.api.recruitmentnotice.application.dto.GetRecruitmentNoticeRedirectionListResponseDto;
 import com.aztgg.api.recruitmentnotice.application.dto.GetRecruitmentNoticeRedirectionsByRankDto;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +20,7 @@ import java.util.List;
 public class RecruitmentNoticeController implements RecruitmentNoticeApi {
 
     private final RecruitmentNoticeService recruitmentNoticeService;
+    private final RecruitmentNoticeFacadeService recruitmentNoticeFacadeService;
 
     @Override
     @GetMapping("/redirections")
@@ -48,5 +53,14 @@ public class RecruitmentNoticeController implements RecruitmentNoticeApi {
     @PostMapping("/{recruitmentNoticeId}/click")
     public void incrementClickCountByRecruitmentNoticeId(@PathVariable("recruitmentNoticeId") Long recruitmentNoticeId) {
         recruitmentNoticeService.incrementClickCountByRecruitmentNoticeId(recruitmentNoticeId);
+    }
+
+    @Override
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PostMapping("/{recruitmentNoticeId}/hot-issues/comments")
+    public void createHotIssueCommentByRecruitmentNoticeId(HttpServletRequest httpServletRequest, @PathVariable("recruitmentNoticeId") Long recruitmentNoticeId,
+                                                           @RequestBody @Valid CreateHotIssueCommentByRecruitmentNoticeIdRequestDto payload) {
+        String ip = httpServletRequest.getHeader("x-forwarded-for").split(",")[0]; // TODO : 되나?
+        recruitmentNoticeFacadeService.createComment(recruitmentNoticeId, ip, payload);
     }
 }
