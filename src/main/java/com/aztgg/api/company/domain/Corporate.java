@@ -64,6 +64,14 @@ public enum Corporate {
     LINE_INVESTMENT_TECH("LINE Investment Technologies", PredefinedCompany.LINE, "LINE Investment Technologies"),
     LINE_LV_CORP("LY Corporation", PredefinedCompany.LINE, "LINE LV Corporation"),
 
+    // 네이버
+    NAVER("NAVER", PredefinedCompany.NAVER, "네이버"),
+    NAVER_CLOUD("NAVER Cloud", PredefinedCompany.NAVER, "네이버 클라우드"),
+    SNOW("SNOW", PredefinedCompany.NAVER, "스노우"),
+    NAVER_LABS("NAVER LABS", PredefinedCompany.NAVER, "네이버 랩스"),
+    NAVER_WEBTOON("NAVER WEBTOON", PredefinedCompany.NAVER, "네이버 웹툰"),
+    NAVER_FINANCIAL("NAVER FINANCIAL", PredefinedCompany.NAVER, "네이버 파이낸셜"),
+    NAVER_IANDS("NAVER I&S", PredefinedCompany.NAVER, "네이버 아이앤애스"),
 
     ;
 
