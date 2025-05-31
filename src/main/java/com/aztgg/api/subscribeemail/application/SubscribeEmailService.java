@@ -53,5 +53,6 @@ public class SubscribeEmailService {
         }
 
         subscribeEmailRepository.delete(subscribeEmail);
+        subscribeEmailRepository.flush();
     }
 }
