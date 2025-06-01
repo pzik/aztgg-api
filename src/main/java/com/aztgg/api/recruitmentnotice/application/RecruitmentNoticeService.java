@@ -7,6 +7,7 @@ import com.aztgg.api.recruitmentnotice.application.dto.GetRecruitmentNoticeRedir
 import com.aztgg.api.recruitmentnotice.application.dto.GetRecruitmentNoticeRedirectionResponseDto;
 import com.aztgg.api.recruitmentnotice.application.dto.GetRecruitmentNoticeRedirectionsByRankDto;
 import com.aztgg.api.recruitmentnotice.domain.RecruitmentNotice;
+import com.aztgg.api.recruitmentnotice.domain.RecruitmentNoticeErrorCode;
 import com.aztgg.api.recruitmentnotice.domain.RecruitmentNoticeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -30,6 +31,15 @@ public class RecruitmentNoticeService {
     private final RecruitmentNoticeRepository recruitmentNoticeRepository;
 
     private static final DateTimeFormatter DAILY_RANK_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+    @Transactional
+    public GetRecruitmentNoticeRedirectionResponseDto incrementViewCountAndGetRecruitmentNoticeRedirection(Long recruitmentNoticeId) {
+        RecruitmentNotice recruitmentNotice = recruitmentNoticeRepository.findById(recruitmentNoticeId)
+                .orElseThrow(() -> new CommonException(RecruitmentNoticeErrorCode.BAD_REQUEST_RECRUITMENT_NOTICE_NOT_FOUND));
+
+        recruitmentNotice.increaseClickCount();
+        return GetRecruitmentNoticeRedirectionResponseDto.from(recruitmentNotice);
+    }
 
     @Transactional(readOnly = true)
     public GetRecruitmentNoticeRedirectionListResponseDto getRecruitmentNoticeRedirectionList(GetRecruitmentNoticeRedirectionListRequestDto request) {

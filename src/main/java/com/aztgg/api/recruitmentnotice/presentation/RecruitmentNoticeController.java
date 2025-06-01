@@ -3,11 +3,14 @@ package com.aztgg.api.recruitmentnotice.presentation;
 import com.aztgg.api.recruitmentnotice.application.RecruitmentNoticeService;
 import com.aztgg.api.recruitmentnotice.application.dto.GetRecruitmentNoticeRedirectionListRequestDto;
 import com.aztgg.api.recruitmentnotice.application.dto.GetRecruitmentNoticeRedirectionListResponseDto;
+import com.aztgg.api.recruitmentnotice.application.dto.GetRecruitmentNoticeRedirectionResponseDto;
 import com.aztgg.api.recruitmentnotice.application.dto.GetRecruitmentNoticeRedirectionsByRankDto;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -16,6 +19,13 @@ import java.util.List;
 public class RecruitmentNoticeController implements RecruitmentNoticeApi {
 
     private final RecruitmentNoticeService recruitmentNoticeService;
+
+    @Override
+    @GetMapping("/{recruitmentNoticeId}/redirect")
+    public void redirectByRecruitmentNotice(HttpServletResponse response, @PathVariable Long recruitmentNoticeId) throws IOException {
+        GetRecruitmentNoticeRedirectionResponseDto responseDto = recruitmentNoticeService.incrementViewCountAndGetRecruitmentNoticeRedirection(recruitmentNoticeId);
+        response.sendRedirect(responseDto.url());
+    }
 
     @Override
     @GetMapping("/redirections")
