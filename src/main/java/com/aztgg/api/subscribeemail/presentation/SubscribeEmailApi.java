@@ -42,5 +42,5 @@ public interface SubscribeEmailApi {
                     responseCode = "200",
                     description = "OK"),
     })
-    void unsubscribeEmail(String email);
+    String unsubscribeEmail(String email);
 }

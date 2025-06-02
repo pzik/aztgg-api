@@ -23,8 +23,8 @@ public class SubscribeEmailController implements SubscribeEmailApi {
 
     @Override
     @GetMapping("/{email}/unsubscribe")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void unsubscribeEmail(@PathVariable String email) {
+    public String unsubscribeEmail(@PathVariable String email) {
         subscribeEmailService.delete(email);
+        return email + ", UNSUBSCRIBE SUCCESS";
     }
 }
