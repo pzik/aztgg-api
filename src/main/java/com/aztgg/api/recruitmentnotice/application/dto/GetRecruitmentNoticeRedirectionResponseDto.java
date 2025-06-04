@@ -1,7 +1,7 @@
 package com.aztgg.api.recruitmentnotice.application.dto;
 
-import com.aztgg.api.company.domain.Corporate;
-import com.aztgg.api.company.domain.PredefinedCompany;
+import com.aztgg.api.global.asset.PredefinedCorporate;
+import com.aztgg.api.global.asset.PredefinedCompany;
 import com.aztgg.api.recruitmentnotice.domain.RecruitmentNotice;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.util.StringUtils;
@@ -24,15 +24,15 @@ public record GetRecruitmentNoticeRedirectionResponseDto(Long recruitmentNoticeI
 
     public record CorporateDto(String corporateCode, String corporateName) {
 
-        public static CorporateDto from(Corporate corporate) {
-            return new CorporateDto(corporate.name(), corporate.getKorean());
+        public static CorporateDto from(PredefinedCorporate predefinedCorporate) {
+            return new CorporateDto(predefinedCorporate.name(), predefinedCorporate.getKorean());
         }
     }
 
     public static GetRecruitmentNoticeRedirectionResponseDto from(RecruitmentNotice recruitmentNotice) {
         String companyName = PredefinedCompany.fromCode(recruitmentNotice.getCompanyCode()).name();
         List<CorporateDto> corporateDtoList = StringUtils.commaDelimitedListToSet(recruitmentNotice.getCorporateCodes()).stream()
-                .map(Corporate::fromCode)
+                .map(PredefinedCorporate::fromCode)
                 .map(CorporateDto::from)
                 .toList();
 

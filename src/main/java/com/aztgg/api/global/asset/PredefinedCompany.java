@@ -1,4 +1,4 @@
-package com.aztgg.api.company.domain;
+package com.aztgg.api.global.asset;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

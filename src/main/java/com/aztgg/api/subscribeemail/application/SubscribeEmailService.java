@@ -1,6 +1,6 @@
 package com.aztgg.api.subscribeemail.application;
 
-import com.aztgg.api.company.domain.StandardCategory;
+import com.aztgg.api.global.asset.PredefinedStandardCategory;
 import com.aztgg.api.global.exception.CommonErrorCode;
 import com.aztgg.api.global.exception.CommonException;
 import com.aztgg.api.subscribeemail.application.dto.CreateSubscribeEmailRequestDto;
@@ -30,9 +30,9 @@ public class SubscribeEmailService {
 
         for (var category : payload.standardCategories()) {
             try {
-                StandardCategory standardCategory = StandardCategory.valueOf(category);
+                PredefinedStandardCategory predefinedStandardCategory = PredefinedStandardCategory.valueOf(category);
                 SubscribeEmailCategory subscribeEmailCategory = SubscribeEmailCategory.builder()
-                        .category(standardCategory.name())
+                        .category(predefinedStandardCategory.name())
                         .build();
 
                 subscribeEmail.addCategory(subscribeEmailCategory);

@@ -3,8 +3,8 @@ package com.aztgg.api.company.application;
 import com.aztgg.api.company.application.dto.GetCompanyCategoriesByCodeResponseDto;
 import com.aztgg.api.company.application.dto.GetCompaniesResponseDto;
 import com.aztgg.api.company.application.dto.GetStandardCategoriesResponseDto;
-import com.aztgg.api.company.domain.PredefinedCompany;
-import com.aztgg.api.company.domain.StandardCategory;
+import com.aztgg.api.global.asset.PredefinedCompany;
+import com.aztgg.api.global.asset.PredefinedStandardCategory;
 import com.aztgg.api.recruitmentnotice.domain.RecruitmentNotice;
 import com.aztgg.api.recruitmentnotice.domain.RecruitmentNoticeRepository;
 import lombok.RequiredArgsConstructor;
@@ -42,7 +42,7 @@ public class CompanyService {
     }
 
     public GetStandardCategoriesResponseDto getStandardCategories() {
-        List<GetStandardCategoriesResponseDto.GetStandardCategoriesResponseItemDto> list = Arrays.stream(StandardCategory.values())
+        List<GetStandardCategoriesResponseDto.GetStandardCategoriesResponseItemDto> list = Arrays.stream(PredefinedStandardCategory.values())
                 .map(GetStandardCategoriesResponseDto.GetStandardCategoriesResponseItemDto::from)
                 .toList();
 
