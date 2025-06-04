@@ -2,10 +2,7 @@ package com.aztgg.api.recruitmentnotice.application;
 
 import com.aztgg.api.global.exception.CommonErrorCode;
 import com.aztgg.api.global.exception.CommonException;
-import com.aztgg.api.recruitmentnotice.application.dto.GetRecruitmentNoticeRedirectionListRequestDto;
-import com.aztgg.api.recruitmentnotice.application.dto.GetRecruitmentNoticeRedirectionListResponseDto;
-import com.aztgg.api.recruitmentnotice.application.dto.GetRecruitmentNoticeRedirectionResponseDto;
-import com.aztgg.api.recruitmentnotice.application.dto.GetRecruitmentNoticeRedirectionsByRankDto;
+import com.aztgg.api.recruitmentnotice.application.dto.*;
 import com.aztgg.api.recruitmentnotice.domain.RecruitmentNotice;
 import com.aztgg.api.recruitmentnotice.domain.RecruitmentNoticeErrorCode;
 import com.aztgg.api.recruitmentnotice.domain.RecruitmentNoticeRepository;
@@ -65,6 +62,12 @@ public class RecruitmentNoticeService {
         } catch (DateTimeParseException e) {
             throw new CommonException(CommonErrorCode.BAD_REQUEST, "invalid date format");
         }
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<GetRecruitmentNoticeResponseDto> findRecruitmentNoticeRedirectionById(Long recruitmentNoticeId) {
+        return recruitmentNoticeRepository.findById(recruitmentNoticeId)
+                .map(GetRecruitmentNoticeResponseDto::from);
     }
 
     @Transactional
