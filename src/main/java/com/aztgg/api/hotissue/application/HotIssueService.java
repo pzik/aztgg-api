@@ -18,6 +18,9 @@ public class HotIssueService {
 
     @Transactional
     public void commentToRecruitmentNotice(Long recruitmentNoticeId, String ip, String content) {
+        if (content.length() > 500) {
+            throw new CommonException(CommonErrorCode.BAD_REQUEST, "Comments can only be up to 500 characters.");
+        }
         HotIssueComment hotIssueComment = HotIssueComment.builder()
                 .ip(ip)
                 .content(content)
