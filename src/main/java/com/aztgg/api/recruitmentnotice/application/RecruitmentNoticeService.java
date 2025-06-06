@@ -35,6 +35,7 @@ public class RecruitmentNoticeService {
                 .orElseThrow(() -> new CommonException(RecruitmentNoticeErrorCode.BAD_REQUEST_RECRUITMENT_NOTICE_NOT_FOUND));
 
         recruitmentNotice.increaseClickCount();
+        increaseDailyNoticeClickCount(recruitmentNotice.getRecruitmentNoticeId());
         return GetRecruitmentNoticeRedirectionResponseDto.from(recruitmentNotice);
     }
 
@@ -80,6 +81,10 @@ public class RecruitmentNoticeService {
         recruitmentNotice.increaseClickCount();
 
         // 일일 클릭 랭크 반영
-        recruitmentNoticeRepository.increaseDailyNoticeClickCount(recruitmentNotice.getRecruitmentNoticeId(), LocalDateTime.now());
+        increaseDailyNoticeClickCount(recruitmentNotice.getRecruitmentNoticeId());
+    }
+
+    private void increaseDailyNoticeClickCount(Long recruitmentNoticeId) {
+        recruitmentNoticeRepository.increaseDailyNoticeClickCount(recruitmentNoticeId, LocalDateTime.now());
     }
 }
