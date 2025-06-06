@@ -33,7 +33,7 @@ public interface CompanyApi {
                         responseCode = "200",
                         description = "OK"),
         })
-        GetCompaniesResponseDto getCompanies();
+        GetCompaniesResponseDto getCompanies(String themeCode);
 
         @Operation(tags = {"Company"}, summary = "컴패니 코드로 카테고리 목록 조회", description = """
             ## API 설명

@@ -5,10 +5,7 @@ import com.aztgg.api.company.application.dto.GetCompanyCategoriesByCodeResponseD
 import com.aztgg.api.company.application.dto.GetCompaniesResponseDto;
 import com.aztgg.api.company.application.dto.GetStandardCategoriesResponseDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,8 +16,8 @@ public class CompanyController implements CompanyApi {
 
     @Override
     @GetMapping("")
-    public GetCompaniesResponseDto getCompanies() {
-        return companyService.getCompanies();
+    public GetCompaniesResponseDto getCompanies(@RequestParam(value = "themeCode", required = false) String themeCode) {
+        return companyService.getCompanies(themeCode);
     }
 
     @Override

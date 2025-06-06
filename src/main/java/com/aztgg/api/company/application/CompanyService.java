@@ -4,7 +4,10 @@ import com.aztgg.api.company.application.dto.GetCompanyCategoriesByCodeResponseD
 import com.aztgg.api.company.application.dto.GetCompaniesResponseDto;
 import com.aztgg.api.company.application.dto.GetStandardCategoriesResponseDto;
 import com.aztgg.api.global.asset.PredefinedCompany;
+import com.aztgg.api.global.asset.PredefinedCompanyTheme;
 import com.aztgg.api.global.asset.PredefinedStandardCategory;
+import com.aztgg.api.global.exception.CommonErrorCode;
+import com.aztgg.api.global.exception.CommonException;
 import com.aztgg.api.recruitmentnotice.domain.RecruitmentNotice;
 import com.aztgg.api.recruitmentnotice.domain.RecruitmentNoticeRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +17,7 @@ import org.springframework.util.StringUtils;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -23,9 +27,21 @@ public class CompanyService {
 
     private final RecruitmentNoticeRepository recruitmentNoticeRepository;
 
-    public GetCompaniesResponseDto getCompanies() {
+    public GetCompaniesResponseDto getCompanies(String themeCode) {
         List<GetCompaniesResponseDto.GetCompaniesItemDto> list = Arrays.stream(PredefinedCompany.values())
                 .filter(PredefinedCompany::isNotUnknown)
+                .filter(company -> {
+                    // theme code 검색
+                    if (Objects.nonNull(themeCode)) {
+                        try {
+                            PredefinedCompanyTheme companyTheme = PredefinedCompanyTheme.fromCode(themeCode);
+                            return companyTheme.getCompanyCodes().contains(company.name());
+                        } catch (IllegalArgumentException e) {
+                            throw new CommonException(CommonErrorCode.BAD_REQUEST, "유효하지 않는 themeCode");
+                        }
+                    }
+                    return true;
+                })
                 .map(company -> new GetCompaniesResponseDto.GetCompaniesItemDto(company.name(), company.getKorean()))
                 .collect(Collectors.toList());
 
