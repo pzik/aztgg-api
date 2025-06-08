@@ -73,6 +73,36 @@ public enum PredefinedCorporate {
     NAVER_FINANCIAL("NAVER FINANCIAL", PredefinedCompany.NAVER, "네이버 파이낸셜"),
     NAVER_IANDS("NAVER I&S", PredefinedCompany.NAVER, "네이버 아이앤애스"),
 
+    // 넥슨
+    NEXON_KOREA("넥슨코리아", PredefinedCompany.NEXON, "넥슨코리아"),
+    NEXON_NEOPLE("네오플", PredefinedCompany.NEXON, "네오플"),
+    NEXON_GAMES("넥슨게임즈", PredefinedCompany.NEXON, "넥슨게임즈"),
+    NEXON_UNIVERSE("넥슨유니버스", PredefinedCompany.NEXON, "넥슨유니버스"),
+    NEXON_DEVCAT("데브캣", PredefinedCompany.NEXON, "데브캣"),
+    NEXON_NITRO("니트로", PredefinedCompany.NEXON, "니트로"),
+    NEXON_ENGINE("엔진스튜디오", PredefinedCompany.NEXON, "엔진스튜디오"),
+    NEXON_NETWORKS("넥슨네트웍스", PredefinedCompany.NEXON, "넥슨네트웍스"),
+    NEXON_COMMUNICATIONS("넥슨커뮤니케이션즈", PredefinedCompany.NEXON, "넥슨커뮤니케이션즈"),
+    NEXON_NMEDIA("엔미디어플랫폼", PredefinedCompany.NEXON, "엔미디어플랫폼"),
+    NEXON_NXC("엔엑스씨", PredefinedCompany.NEXON, "엔엑스씨"),
+    NEXON_MINT("민트로켓", PredefinedCompany.NEXON, "민트로켓"),
+    NEXON_SPACE("넥슨스페이스", PredefinedCompany.NEXON, "넥슨스페이스"),
+
+    // 크래프톤
+    KRAFTON("KRAFTON", PredefinedCompany.KRAFTON, "크래프톤"),
+    KRAFTON_PUBG("PUBGSTUDIOS", PredefinedCompany.KRAFTON, "PUBG Studio"),
+    KRAFTON_BLUEHOLE("BlueholeStudio", PredefinedCompany.KRAFTON, "Bluehole Studio"),
+    KRAFTON_STRIKING("StrikingDistanceStudios", PredefinedCompany.KRAFTON, "스트라이킹 디스턴스 스튜디오"),
+    KRAFTON_RISING("RisingWings", PredefinedCompany.KRAFTON, "라이징윙스"),
+    KRAFTON_5MINLAB("5minlab", PredefinedCompany.KRAFTON, "5민랩"),
+    KRAFTON_0MNI("OmniCraftLabs", PredefinedCompany.KRAFTON, "옴니크래프트랩스"),
+    KRAFTON_INZOI("inZOIStudio", PredefinedCompany.KRAFTON, "인조이 스튜디오"),
+    KRAFTON_UNKNOWN_WORLDS("UnknownWorlds", PredefinedCompany.KRAFTON, "언노운 월드"),
+    KRAFTON_MONTREAL("KRAFTONMontrealStudio", PredefinedCompany.KRAFTON, "KRAFTON MONTREAL"),
+    KRAFTON_RELU("ReLUGames", PredefinedCompany.KRAFTON, "렐루게임즈"),
+    KRAFTON_FLYWAY("FlywayGames", PredefinedCompany.KRAFTON, "Flyway Games"),
+    KRAFTON_OVERDARE("OVERDARE", PredefinedCompany.KRAFTON, "OVERDARE"),
+    KRAFTON_TANGO("TangoGameworks", PredefinedCompany.KRAFTON, "탱고게임웍스"),
     ;
 
     private final String id; // 각 스크랩 시 공고의 대상 법인을 식별하는 값

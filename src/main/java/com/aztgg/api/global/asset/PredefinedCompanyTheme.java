@@ -14,6 +14,7 @@ public enum PredefinedCompanyTheme {
             PredefinedCompany.LINE.name(),
             PredefinedCompany.COUPANG.name(),
             PredefinedCompany.WOOWAHAN.name())),
+    NK("넥슨 ⦁ 크래프톤", Set.of(PredefinedCompany.NEXON.name(), PredefinedCompany.KRAFTON.name())),
     ;
 
     private final String korean;
