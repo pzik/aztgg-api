@@ -20,7 +20,6 @@ public record GetHotIssueResponseDto(Long hotIssueId,
 
     @Builder
     public record GetHotIssueResponseCommentDto(Long hotIssueCommentId,
-                                                String ip,
                                                 String maskedIp,
                                                 String anonymousName,
                                                 String content,
@@ -29,7 +28,6 @@ public record GetHotIssueResponseDto(Long hotIssueId,
         public static GetHotIssueResponseCommentDto from(HotIssueComment hotIssueComment) {
             return GetHotIssueResponseCommentDto.builder()
                     .hotIssueCommentId(hotIssueComment.getHotIssueCommentId())
-                    .ip(hotIssueComment.getIp())
                     .anonymousName(hotIssueComment.getAnonymousName())
                     .maskedIp(hotIssueComment.getMaskedIp())
                     .content(hotIssueComment.getContent())
