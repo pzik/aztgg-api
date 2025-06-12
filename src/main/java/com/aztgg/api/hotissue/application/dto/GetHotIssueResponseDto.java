@@ -10,7 +10,11 @@ import java.util.List;
 @Builder
 public record GetHotIssueResponseDto(Long hotIssueId,
                                      Long recruitmentNoticeId,
+                                     String title,
+                                     String content,
                                      List<GetHotIssueResponseCommentDto> comments,
+                                     LocalDateTime startAt,
+                                     LocalDateTime endAt,
                                      LocalDateTime createdAt,
                                      LocalDateTime modifiedAt) {
 
@@ -18,6 +22,7 @@ public record GetHotIssueResponseDto(Long hotIssueId,
     public record GetHotIssueResponseCommentDto(Long hotIssueCommentId,
                                                 String ip,
                                                 String maskedIp,
+                                                String anonymousName,
                                                 String content,
                                                 LocalDateTime createdAt,
                                                 LocalDateTime modifiedAt) {
@@ -25,6 +30,7 @@ public record GetHotIssueResponseDto(Long hotIssueId,
             return GetHotIssueResponseCommentDto.builder()
                     .hotIssueCommentId(hotIssueComment.getHotIssueCommentId())
                     .ip(hotIssueComment.getIp())
+                    .anonymousName(hotIssueComment.getAnonymousName())
                     .maskedIp(hotIssueComment.getMaskedIp())
                     .content(hotIssueComment.getContent())
                     .createdAt(hotIssueComment.getCreatedAt())
@@ -39,8 +45,30 @@ public record GetHotIssueResponseDto(Long hotIssueId,
                 .toList();
         return GetHotIssueResponseDto.builder()
                 .hotIssueId(hotIssue.getHotIssueId())
+                .title(hotIssue.getTitle())
+                .content(hotIssue.getContent())
                 .recruitmentNoticeId(hotIssue.getRecruitmentNoticeId())
                 .comments(commentDtoList)
+                .startAt(hotIssue.getStartAt())
+                .endAt(hotIssue.getEndAt())
+                .createdAt(hotIssue.getCreatedAt())
+                .modifiedAt(hotIssue.getModifiedAt())
+                .build();
+    }
+
+    public static GetHotIssueResponseDto fromLimitComment(HotIssue hotIssue, int limitCount) {
+        List<GetHotIssueResponseCommentDto> commentDtoList = hotIssue.getComments().stream()
+                .map(GetHotIssueResponseCommentDto::from)
+                .limit(limitCount)
+                .toList();
+        return GetHotIssueResponseDto.builder()
+                .hotIssueId(hotIssue.getHotIssueId())
+                .title(hotIssue.getTitle())
+                .content(hotIssue.getContent())
+                .recruitmentNoticeId(hotIssue.getRecruitmentNoticeId())
+                .comments(commentDtoList)
+                .startAt(hotIssue.getStartAt())
+                .endAt(hotIssue.getEndAt())
                 .createdAt(hotIssue.getCreatedAt())
                 .modifiedAt(hotIssue.getModifiedAt())
                 .build();

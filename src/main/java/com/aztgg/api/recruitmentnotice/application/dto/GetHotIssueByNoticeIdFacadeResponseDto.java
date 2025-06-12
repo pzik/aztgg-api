@@ -15,7 +15,7 @@ public record GetHotIssueByNoticeIdFacadeResponseDto(Long hotIssueId,
     @Builder
     public record GetHotIssueByNoticeIdResponseCommentDto(Long hotIssueCommentId,
                                                 String maskedIp,
-                                                String writer,
+                                                String anonymousName,
                                                 String content,
                                                 LocalDateTime createdAt,
                                                 LocalDateTime modifiedAt) {
@@ -23,7 +23,7 @@ public record GetHotIssueByNoticeIdFacadeResponseDto(Long hotIssueId,
             return GetHotIssueByNoticeIdResponseCommentDto.builder()
                     .hotIssueCommentId(commentDto.hotIssueCommentId())
                     .maskedIp(commentDto.maskedIp())
-                    .writer("익명")
+                    .anonymousName(commentDto.anonymousName())
                     .content(commentDto.content())
                     .createdAt(commentDto.createdAt())
                     .modifiedAt(commentDto.modifiedAt())
