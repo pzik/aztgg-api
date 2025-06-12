@@ -29,6 +29,9 @@ public class HotIssueComment {
     @Column(name = "ip")
     private String ip;
 
+    @Column(name = "anonymousName")
+    private String anonymousName;
+
     @Column(name = "content")
     private String content;
 
@@ -39,10 +42,11 @@ public class HotIssueComment {
     private LocalDateTime modifiedAt;
 
     @Builder
-    public HotIssueComment(Long hotIssueCommentId, String ip, String content) {
+    public HotIssueComment(Long hotIssueCommentId, String ip, String anonymousName, String content) {
         this.hotIssueCommentId = hotIssueCommentId;
         this.ip = ip;
         this.content = content;
+        this.anonymousName = anonymousName;
     }
 
     public void updateParent(HotIssue hotIssue) {

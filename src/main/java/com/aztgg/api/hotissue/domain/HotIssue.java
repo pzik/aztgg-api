@@ -27,8 +27,20 @@ public class HotIssue {
     @Column(name = "recruitmentNoticeId")
     private Long recruitmentNoticeId;
 
+    @Column(name = "title")
+    private String title;
+
+    @Column(name = "content")
+    private String content;
+
     @OneToMany(mappedBy = "hotIssue", cascade = {CascadeType.ALL})
     private List<HotIssueComment> comments = new ArrayList<>();
+
+    @Column(name = "startAt")
+    private LocalDateTime startAt;
+
+    @Column(name = "endAt")
+    private LocalDateTime endAt;
 
     @CreatedDate
     private LocalDateTime createdAt;
@@ -37,10 +49,14 @@ public class HotIssue {
     private LocalDateTime modifiedAt;
 
     @Builder
-    public HotIssue(Long hotIssueId, Long recruitmentNoticeId, List<HotIssueComment> comments) {
+    public HotIssue(Long hotIssueId, Long recruitmentNoticeId, String title, String content, List<HotIssueComment> comments, LocalDateTime startAt, LocalDateTime endAt) {
         this.hotIssueId = hotIssueId;
+        this.title = title;
+        this.content = content;
         this.recruitmentNoticeId = recruitmentNoticeId;
         this.comments = comments;
+        this.startAt = startAt;
+        this.endAt = endAt;
 
         if (this.comments == null) {
             this.comments = new ArrayList<>();

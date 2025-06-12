@@ -17,7 +17,7 @@ public class GlobalExceptionHandler {
 
         ErrorResponse error = ErrorResponse.builder()
                 .status(commonErrorCode.getHttpStatus().value())
-                .message(commonErrorCode.getMessage())
+                .message(ex.getMessage())
                 .code(commonErrorCode.getCode())
                 .build();
 
@@ -30,7 +30,7 @@ public class GlobalExceptionHandler {
 
         ErrorResponse error = ErrorResponse.builder()
                 .status(errorCode.getHttpStatus().value())
-                .message(errorCode.getMessage())
+                .message(ex.getMessage())
                 .code(errorCode.getCode())
                 .build();
 

@@ -30,7 +30,7 @@ public class RecruitmentNoticeFacadeService {
             throw new CommonException(CommonErrorCode.BAD_REQUEST, "invalid recruitmentNoticeId");
         }
 
-        hotIssueService.commentToRecruitmentNotice(recruitmentNoticeId, ip, payload.content());
+        hotIssueService.commentToRecruitmentNotice(recruitmentNoticeId, ip, payload.anonymousName(), payload.content());
     }
 
     public GetHotIssueByNoticeIdFacadeResponseDto getHotIssueByNoticeId(Long recruitmentNoticeId) {
