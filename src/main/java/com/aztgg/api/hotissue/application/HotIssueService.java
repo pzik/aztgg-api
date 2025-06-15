@@ -44,7 +44,7 @@ public class HotIssueService {
         LocalDateTime now = LocalDateTime.now();
         List<GetHotIssueResponseDto> hotIssues = hotIssueRepository.findAllByStartAtLessThanEqualAndEndAtGreaterThanEqual(now, now)
                 .stream()
-                .map(a -> GetHotIssueResponseDto.fromLimitComment(a, 5))
+                .map(a -> GetHotIssueResponseDto.fromLimitCommentDesc(a, 5))
                 .toList();
         return new GetHotIssuesResponseDto(hotIssues);
     }

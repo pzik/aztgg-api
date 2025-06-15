@@ -54,8 +54,10 @@ public record GetHotIssueResponseDto(Long hotIssueId,
                 .build();
     }
 
-    public static GetHotIssueResponseDto fromLimitComment(HotIssue hotIssue, int limitCount) {
-        List<GetHotIssueResponseCommentDto> commentDtoList = hotIssue.getComments().stream()
+    public static GetHotIssueResponseDto fromLimitCommentDesc(HotIssue hotIssue, int limitCount) {
+        // 코멘트는 역순으로 5개 조회
+        List<GetHotIssueResponseCommentDto> commentDtoList = hotIssue.getComments().reversed()
+                .stream()
                 .map(GetHotIssueResponseCommentDto::from)
                 .limit(limitCount)
                 .toList();
