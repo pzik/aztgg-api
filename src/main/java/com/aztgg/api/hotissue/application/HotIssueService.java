@@ -61,7 +61,7 @@ public class HotIssueService {
         return GetHotIssueResponseDto.from(hotIssue);
     }
 
-    private void addComment(HotIssue hotIssue, String ip, String content, String anonymousName) {
+    private void addComment(HotIssue hotIssue, String ip, String anonymousName, String content) {
         HotIssueComment hotIssueComment = HotIssueComment.builder()
                 .ip(ip)
                 .content(content)
