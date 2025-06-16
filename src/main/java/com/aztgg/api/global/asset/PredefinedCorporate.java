@@ -103,6 +103,15 @@ public enum PredefinedCorporate {
     KRAFTON_FLYWAY("FlywayGames", PredefinedCompany.KRAFTON, "Flyway Games"),
     KRAFTON_OVERDARE("OVERDARE", PredefinedCompany.KRAFTON, "OVERDARE"),
     KRAFTON_TANGO("TangoGameworks", PredefinedCompany.KRAFTON, "탱고게임웍스"),
+
+    // 두나무
+    DUNAMU("DUNAMU", PredefinedCompany.DUNAMU, "두나무"),
+
+    // 몰로코
+    MOLOCO("MOLOCO", PredefinedCompany.MOLOCO, "몰로코"),
+
+    // 센드버드
+    SENDBIRD("SENDBIRD", PredefinedCompany.SENDBIRD, "센드버드"),
     ;
 
     private final String id; // 각 스크랩 시 공고의 대상 법인을 식별하는 값

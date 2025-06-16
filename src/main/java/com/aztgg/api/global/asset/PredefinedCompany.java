@@ -20,6 +20,9 @@ public enum PredefinedCompany {
     TOSS("토스"),
     NEXON("넥슨"),
     KRAFTON("크래프톤"),
+    MOLOCO("몰로코"),
+    DUNAMU("두나무"),
+    SENDBIRD("센드버드"),
     ;
 
     private final String korean;
