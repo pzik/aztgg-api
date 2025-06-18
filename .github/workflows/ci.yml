@@ -32,7 +32,7 @@ jobs:
         run: ./gradlew clean build --no-daemon -x test
 
       - name: 빌드 결과물 업로드
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
             name: built-jar
             path: build/libs/*.jar
