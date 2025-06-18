@@ -40,10 +40,10 @@ jobs:
 
       - name: JAR를 EC2로 복사
         run: |
-          scp -i ~/.ssh/ec2.pem -o StrictHostKeyChecking=no ./build/libs/*.jar ${{ secrets.EC2_HOST }}:/opt/api/api.jar
+          scp -i ~/.ssh/ec2.pem -o StrictHostKeyChecking=no ./build/libs/*.jar ubuntu@${{ secrets.EC2_HOST }}:/opt/api/api.jar
 
       - name: Restart systemd service on EC2
         run: |
-          ssh -i ~/.ssh/ec2.pem -o StrictHostKeyChecking=no ${{ secrets.EC2_HOST }} << EOF
+          ssh -i ~/.ssh/ec2.pem -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_HOST }} << EOF
             sudo systemctl restart api-test.service
           EOF
