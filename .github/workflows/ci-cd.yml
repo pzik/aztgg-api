@@ -9,6 +9,7 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    environment: prod
 
     steps:
       - name: 소스 코드를 runner에 체크아웃
