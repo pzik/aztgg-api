@@ -18,7 +18,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Docker Buildx 설정 (멀티 플랫폼 빌드를 위해 사용)
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v4
 
       - name: EC2 접속을 위한 SSH 키 설정
         run: |
