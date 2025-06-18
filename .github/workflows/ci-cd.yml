@@ -24,6 +24,10 @@ jobs:
       - name: Gradle Wrapper 파일에 실행 권한 부여
         run: chmod +x ./gradlew
 
+      - name: 운영 application.yml 추가
+        run: |
+          echo "${{ secrets.PROD_YML }}" > src/main/resources/application-prod.yml
+
       - name: Gradle로 빌드 및 테스트 실행
         run: ./gradlew clean build --no-daemon -x test
 
