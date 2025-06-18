@@ -26,6 +26,12 @@ jobs:
           echo "${{ secrets.EC2_KEY }}" > ~/.ssh/ec2.pem  # 비밀키 파일 생성
           chmod 600 ~/.ssh/ec2.pem            # 비밀키 파일 권한 설정
 
+      - name: 빌드 결과물 다운로드
+        uses: actions/download-artifact@v3
+        with:
+          name: built-jar
+          path: ./build/libs/
+
       - name: JAR를 EC2로 복사
         run: |
           scp -i ~/.ssh/ec2.pem -o StrictHostKeyChecking=no build/libs/*.jar \

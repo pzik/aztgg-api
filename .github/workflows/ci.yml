@@ -30,3 +30,9 @@ jobs:
 
       - name: Gradle로 빌드 및 테스트 실행
         run: ./gradlew clean build --no-daemon -x test
+
+      - name: 빌드 결과물 업로드
+        uses: actions/upload-artifact@v3
+        with:
+            name: built-jar
+            path: build/libs/*.jar
