@@ -1,5 +1,6 @@
 package com.aztgg.api.global.exception;
 
+import com.aztgg.api.global.logging.AppLogger;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -7,6 +8,21 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    @ExceptionHandler(Exception.class)
+    protected ResponseEntity<ErrorResponse> handleException(Exception ex) {
+        CommonErrorCode commonErrorCode = CommonErrorCode.INTERNAL_SERVER_ERROR;
+
+        ErrorResponse error = ErrorResponse.builder()
+                .status(commonErrorCode.getHttpStatus().value())
+                .message(ex.getMessage())
+                .code(commonErrorCode.getCode())
+                .build();
+
+        AppLogger.errorLog(ex.getMessage(), ex);
+        return new ResponseEntity<>(error, commonErrorCode.getHttpStatus());
+    }
+
     /**
      * Bean Validation에 실패했을 때, 에러메시지를 내보내기 위한 Exception Handler
      */
@@ -21,6 +37,7 @@ public class GlobalExceptionHandler {
                 .code(commonErrorCode.getCode())
                 .build();
 
+        AppLogger.errorLog(ex.getMessage(), ex);
         return new ResponseEntity<>(error, commonErrorCode.getHttpStatus());
     }
 
@@ -34,6 +51,7 @@ public class GlobalExceptionHandler {
                 .code(errorCode.getCode())
                 .build();
 
+        AppLogger.errorLog(ex.getMessage(), ex);
         return new ResponseEntity<>(error, errorCode.getHttpStatus());
     }
 }

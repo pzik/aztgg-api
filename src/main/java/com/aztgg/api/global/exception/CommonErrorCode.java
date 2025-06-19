@@ -11,6 +11,7 @@ public enum CommonErrorCode implements BaseErrorCode {
     CONFLICT(HttpStatus.CONFLICT, "COMMON_001", "리소스 중복"),
     REQUEST_PARAMETER_BIND_FAILED(HttpStatus.BAD_REQUEST, "COMMON_002", "PARAMETER_BIND_FAILED"),
     BAD_REQUEST(HttpStatus.BAD_REQUEST, "COMMON_003", "BAD REQUEST"),
+    INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "COMMON_004", "INTERNAL SERVER ERROR"),
     ;
 
     private final HttpStatus httpStatus;
