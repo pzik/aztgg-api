@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>카카오 로그인 테스트</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .container {
+            text-align: center;
+            margin-top: 30px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #FEE500;
+            color: #000000;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 20px 0;
+            border: none;
+            cursor: pointer;
+        }
+        .result, .error {
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+            text-align: left;
+            display: none;
+        }
+        .result {
+            border: 1px solid #ddd;
+        }
+        .error {
+            color: red;
+            border: 1px solid red;
+            background-color: #ffeeee;
+        }
+        pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>카카오 로그인 테스트</h1>
+    <p>아래 버튼을 클릭하여 카카오 로그인을 시작하세요.</p>
+    <button id="kakao-login-btn" class="btn">카카오 계정으로 로그인</button>
+
+    <div id="error" class="error">
+        <h3>오류가 발생했습니다</h3>
+        <p id="error-message"></p>
+    </div>
+
+    <div id="result" class="result">
+        <h3>결과:</h3>
+        <pre id="result-content"></pre>
+    </div>
+</div>
+
+<!-- Kakao SDK -->
+<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+<script>
+    const KAKAO_JS_KEY = ''; // 여기에 본인의 JS 키 입력
+    const API_SERVER = window.location.origin; // 예: http://localhost:8080
+
+    Kakao.init(KAKAO_JS_KEY);
+
+    function showError(message) {
+        document.getElementById('error').style.display = 'block';
+        document.getElementById('error-message').textContent = message;
+    }
+
+    async function processKakaoLogin(accessToken) {
+        try {
+            document.getElementById('result').style.display = 'block';
+            document.getElementById('result-content').textContent = '카카오 액세스 토큰으로 로그인 중...';
+            console.log('kakao accessToken: ', accessToken);
+            const response = await fetch(`${API_SERVER}/v1/auth/kakao/login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ kakaoToken: accessToken })
+            });
+
+            if (!response.ok) {
+                throw new Error(`API 요청 실패: ${response.status} - ${response.statusText}`);
+            }
+
+            const data = await response.json();
+            localStorage.setItem('jwt_token', data.accessToken);
+
+            document.getElementById('result-content').textContent =
+                '로그인 성공!\n\n' +
+                'JWT 토큰: ' + data.accessToken + '\n\n';
+
+            // 사용자 정보 조회
+            const userResponse = await fetch(`${API_SERVER}/v1/users`, {
+                headers: {
+                    'Authorization': 'Bearer ' + data.accessToken
+                }
+            });
+
+            if (userResponse.ok) {
+                const userData = await userResponse.json();
+                document.getElementById('result-content').textContent +=
+                    '사용자 정보:\n' + JSON.stringify(userData, null, 2);
+            } else {
+                document.getElementById('result-content').textContent +=
+                    '사용자 정보 조회 실패: ' + userResponse.status;
+            }
+        } catch (error) {
+            showError(error.message);
+            document.getElementById('result-content').textContent = '오류 발생: ' + error.message;
+            console.error(error);
+        }
+    }
+
+    document.getElementById('kakao-login-btn').addEventListener('click', function () {
+        Kakao.Auth.login({
+            scope: 'profile_nickname',
+            success: function (authObj) {
+                const accessToken = authObj.access_token;
+                processKakaoLogin(accessToken);
+            },
+            fail: function (err) {
+                showError("카카오 로그인 실패: " + JSON.stringify(err));
+            }
+        });
+    });
+</script>
+</body>
+</html>
