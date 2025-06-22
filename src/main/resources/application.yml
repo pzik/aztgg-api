@@ -1,14 +1,15 @@
 spring:
   profiles:
     active: local
-
+  jpa:
+    open-in-view: false
 logging:
   file:
     path: ./logs
 
 springdoc:
   api-docs:
-    path: /docs # 환경별 경로 보안 검토
+    path: /docs
   swagger-ui:
     path: /docs/index.html
 
@@ -59,3 +60,9 @@ spring:
     properties:
       hibernate:
         format_sql: true
+
+jwt:
+  secret: 9a4f2c8d3b7a1e6f5d4c2b8a7f3e9d1c6b4a8f2e7d3c5b9a1f4e8d2c7b3a6f5e9
+  access-token: 1800000
+  refresh-token:
+    expiration: 1209600000
