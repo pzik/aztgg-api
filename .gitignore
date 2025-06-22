@@ -11,6 +11,7 @@ build/
 .factorypath
 .project
 .settings
+.DS_Store
 .springBeans
 .sts4-cache
 bin/
