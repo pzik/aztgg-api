@@ -50,5 +50,5 @@ jobs:
       - name: Restart systemd service on EC2
         run: |
           ssh -i ~/.ssh/ec2.pem -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_HOST }} << EOF
-            sudo systemctl restart api-test.service
+            sudo systemctl restart api.service
           EOF
