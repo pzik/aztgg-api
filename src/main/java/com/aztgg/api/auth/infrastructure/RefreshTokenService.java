@@ -1,62 +1,44 @@
 package com.aztgg.api.auth.infrastructure;
 
-import com.aztgg.api.auth.application.UserService;
-import com.aztgg.api.auth.domain.User;
+import com.aztgg.api.auth.domain.RefreshTokenManager;
 import com.aztgg.api.auth.domain.exception.AuthException;
 import com.aztgg.api.auth.infrastructure.redis.RedisRefreshToken;
 import com.aztgg.api.auth.infrastructure.redis.RedisRefreshTokenRepository;
-import com.aztgg.api.global.security.JwtService;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-public class RefreshTokenService {
+public class RefreshTokenService implements RefreshTokenManager {
 
     private final RedisRefreshTokenRepository refreshTokenRepository;
     private final long refreshTokenExpirationMillis;
-    private final JwtService jwtService;
-    private final UserService userService;
 
     public RefreshTokenService(
-            RedisRefreshTokenRepository refreshTokenRepository,
-            @Value("${jwt.refresh-token.expiration}") long refreshTokenExpirationMillis,
-            JwtService jwtService,
-            UserService userService) {
+        RedisRefreshTokenRepository refreshTokenRepository,
+        @Value("${jwt.refresh-token.expiration}") long refreshTokenExpirationMillis
+    ) {
         this.refreshTokenRepository = refreshTokenRepository;
         this.refreshTokenExpirationMillis = refreshTokenExpirationMillis;
-        this.jwtService = jwtService;
-        this.userService = userService;
     }
 
-    public String createRefreshToken(String username) {
+    public void save(String username, String refreshToken) {
         refreshTokenRepository.deleteByUsername(username);
-
-        User user = userService.findByUsername(username);
-
-        String jwtToken = jwtService.generateRefreshToken(user);
-
-        RedisRefreshToken refreshToken = RedisRefreshToken.createWithToken(username, jwtToken, refreshTokenExpirationMillis);
-        refreshTokenRepository.save(refreshToken);
-
-        return jwtToken;
+        RedisRefreshToken token = RedisRefreshToken.createWithToken(username, refreshToken, refreshTokenExpirationMillis);
+        refreshTokenRepository.save(token);
     }
 
     public String validateRefreshToken(String token) {
-        RedisRefreshToken refreshToken = refreshTokenRepository.findById(token)
-                .orElseThrow(AuthException::invalidToken);
-
-        return refreshToken.getUsername();
+        return refreshTokenRepository.findById(token)
+            .orElseThrow(AuthException::invalidToken)
+            .getUsername();
     }
 
-    public String rotateRefreshToken(String oldToken, String username) {
+    public void rotateRefreshToken(String oldToken, String username, String newToken) {
         validateRefreshToken(oldToken);
-
         refreshTokenRepository.deleteById(oldToken);
-
-        return createRefreshToken(username);
+        save(username, newToken);
     }
 
     public void deleteRefreshToken(String token) {

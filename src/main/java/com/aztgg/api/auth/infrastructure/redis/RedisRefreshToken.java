@@ -1,42 +1,27 @@
 package com.aztgg.api.auth.infrastructure.redis;
 
-import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
-import org.springframework.data.redis.core.TimeToLive;
-import org.springframework.data.redis.core.index.Indexed;
 
-import java.time.LocalDateTime;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
-
+@RedisHash(value = "refreshToken", timeToLive = 0)
 @Getter
-@RedisHash("refreshToken")
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RedisRefreshToken {
 
     @Id
     private String token;
-
-    @Indexed
     private String username;
+    private long expirationMillis;
 
-    private LocalDateTime createdAt;
+    protected RedisRefreshToken() {}
 
-    @TimeToLive(unit = TimeUnit.SECONDS)
-    private Long timeToLive;
-
-    private RedisRefreshToken(String token, String username, Long timeToLiveInSeconds) {
+    private RedisRefreshToken(String token, String username, long expirationMillis) {
         this.token = token;
         this.username = username;
-        this.createdAt = LocalDateTime.now();
-        this.timeToLive = timeToLiveInSeconds;
+        this.expirationMillis = expirationMillis;
     }
 
-    public static RedisRefreshToken createWithToken(String username, String token, long expirationInMillis) {
-        long timeToLiveInSeconds = expirationInMillis / 1000;
-        return new RedisRefreshToken(token, username, timeToLiveInSeconds);
+    public static RedisRefreshToken createWithToken(String username, String token, long expirationMillis) {
+        return new RedisRefreshToken(token, username, expirationMillis / 1000); // Redis TTL 단위: 초
     }
 }
