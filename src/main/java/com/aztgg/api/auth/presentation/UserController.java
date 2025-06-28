@@ -1,7 +1,6 @@
 package com.aztgg.api.auth.presentation;
 
 import com.aztgg.api.auth.application.dto.response.UserResponse;
-import com.aztgg.api.auth.application.dto.request.UserUpdateRequest;
 import com.aztgg.api.auth.domain.User;
 import com.aztgg.api.auth.application.UserService;
 import lombok.RequiredArgsConstructor;
@@ -20,13 +19,6 @@ public class UserController implements UserApi {
     public ResponseEntity<UserResponse> getCurrentUser() {
         User user = userService.getCurrentUser();
         return ResponseEntity.ok(UserResponse.from(user));
-    }
-
-    @PutMapping("/{userId}")
-    @PreAuthorize( "hasRole('ADMIN')")
-    public ResponseEntity<UserResponse> updateUser(@PathVariable Long userId, @RequestBody UserUpdateRequest request) {
-        User updatedUser = userService.updateUser(userId, request);
-        return ResponseEntity.ok(UserResponse.from(updatedUser));
     }
 
     @DeleteMapping("/{userId}")

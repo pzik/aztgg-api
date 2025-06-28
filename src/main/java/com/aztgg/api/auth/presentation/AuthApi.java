@@ -1,5 +1,6 @@
 package com.aztgg.api.auth.presentation;
 
+import com.aztgg.api.auth.application.dto.request.AdminLoginRequest;
 import com.aztgg.api.auth.application.dto.request.KakaoLoginRequest;
 import com.aztgg.api.auth.application.dto.response.LoginResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -20,6 +21,10 @@ import org.springframework.web.bind.annotation.*;
 })
 public interface AuthApi {
 
+    @Operation(summary = "관리자 로그인", description = "관리자 계정으로 로그인합니다.")
+    @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = LoginResponse.class)))
+    @PostMapping("/admin/login")
+    ResponseEntity<LoginResponse> adminLogin(@RequestBody AdminLoginRequest loginRequest);
 
     @Operation(summary = "카카오 로그인", description = "카카오 액세스 토큰으로 로그인합니다.")
     @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = LoginResponse.class)))

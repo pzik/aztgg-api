@@ -1,6 +1,5 @@
 package com.aztgg.api.auth.application;
 
-import com.aztgg.api.auth.application.dto.request.UserUpdateRequest;
 import com.aztgg.api.auth.domain.Role;
 import com.aztgg.api.auth.domain.User;
 import com.aztgg.api.auth.domain.UserRepository;
@@ -25,11 +24,6 @@ public class UserService {
     public User getCurrentUser() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         return findByUsername(username);
-    }
-
-    public User findById(Long userId) {
-        return userRepository.findById(userId)
-            .orElseThrow(() -> AuthException.userNotFound(userId));
     }
 
     public User findByUsername(String username) {
@@ -57,27 +51,6 @@ public class UserService {
             role
         );
         return userRepository.save(user);
-    }
-
-    @Transactional
-    public User updateUser(Long userId, UserUpdateRequest request) {
-        User user = findById(userId);
-
-        if (request.getEmail() != null && !request.getEmail().equals(user.getEmail())) {
-            // 이메일 중복 체크
-            boolean isDuplicate = userRepository.existsByEmail(request.getEmail());
-            if (isDuplicate) {
-                throw AuthException.emailAlreadyExists();
-            }
-            user.changeEmail(request.getEmail());
-        }
-
-        if (request.getPassword() != null) {
-            String encodedPassword = passwordEncoder.encode(request.getPassword());
-            user.changePassword(encodedPassword);
-        }
-
-        return user;
     }
 
     @Transactional

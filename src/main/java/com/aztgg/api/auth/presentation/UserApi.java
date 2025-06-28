@@ -1,7 +1,7 @@
 package com.aztgg.api.auth.presentation;
 
 import com.aztgg.api.auth.application.dto.response.UserResponse;
-import com.aztgg.api.auth.application.dto.request.UserUpdateRequest;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -32,19 +32,6 @@ public interface UserApi {
     )
     @GetMapping("")
     ResponseEntity<UserResponse> getCurrentUser();
-
-    @Operation(summary = "사용자 정보 수정 (관리자 전용)", description = """
-            ## API 설명
-            관리자가 특정 사용자의 정보를 수정합니다.
-            """)
-    @ApiResponse(
-        responseCode = "200",
-        description = "OK",
-        content = @Content(schema = @Schema(implementation = UserResponse.class))
-    )
-    @PutMapping("/{userId}")
-    ResponseEntity<UserResponse> updateUser(@PathVariable Long userId, @RequestBody UserUpdateRequest request);
-
     @Operation(summary = "사용자 삭제 (관리자 전용)", description = """
             ## API 설명
             관리자가 특정 사용자를 삭제합니다.

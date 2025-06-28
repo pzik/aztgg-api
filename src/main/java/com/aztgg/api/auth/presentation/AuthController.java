@@ -1,8 +1,10 @@
 package com.aztgg.api.auth.presentation;
 
 import com.aztgg.api.auth.application.AuthService;
+import com.aztgg.api.auth.application.dto.request.AdminLoginRequest;
 import com.aztgg.api.auth.application.dto.request.KakaoLoginRequest;
 import com.aztgg.api.auth.application.dto.response.LoginResponse;
+import com.aztgg.api.auth.application.strategy.impl.AdminAuthCredentials;
 import com.aztgg.api.auth.application.strategy.impl.KakaoAuthCredentials;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +15,12 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController implements AuthApi {
 
     private final AuthService authService;
+
+    @Override
+    public ResponseEntity<LoginResponse> adminLogin(@RequestBody AdminLoginRequest loginRequest) {
+        AdminAuthCredentials credentials = AdminAuthCredentials.of(loginRequest.getUsername(), loginRequest.getPassword());
+        return ResponseEntity.ok(authService.authenticate(credentials));
+    }
 
     @Override
     public ResponseEntity<LoginResponse> kakaoLogin(@RequestBody KakaoLoginRequest loginRequest) {
