@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Auth", description = "인증 API")
-@RequestMapping("/v1/auth")
 @ApiResponses({
     @ApiResponse(responseCode = "400", description = "BAD_REQUEST", content = @Content),
     @ApiResponse(responseCode = "401", description = "UNAUTHORIZED", content = @Content),
@@ -23,12 +22,10 @@ public interface AuthApi {
 
     @Operation(summary = "관리자 로그인", description = "관리자 계정으로 로그인합니다.")
     @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = LoginResponse.class)))
-    @PostMapping("/admin/login")
     ResponseEntity<LoginResponse> adminLogin(@RequestBody AdminLoginRequest loginRequest);
 
     @Operation(summary = "카카오 로그인", description = "카카오 액세스 토큰으로 로그인합니다.")
     @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = LoginResponse.class)))
-    @PostMapping("/kakao/login")
     ResponseEntity<LoginResponse> kakaoLogin(@RequestBody KakaoLoginRequest loginRequest);
 
     @Operation(summary = "토큰 갱신", description = "리프레시 토큰으로 액세스 토큰을 갱신합니다.")
