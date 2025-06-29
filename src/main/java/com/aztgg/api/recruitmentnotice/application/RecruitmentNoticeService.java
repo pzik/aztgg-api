@@ -22,6 +22,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class RecruitmentNoticeService {
 
@@ -29,7 +30,6 @@ public class RecruitmentNoticeService {
 
     private static final DateTimeFormatter DAILY_RANK_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-    @Transactional
     public GetRecruitmentNoticeRedirectionResponseDto incrementViewCountAndGetRecruitmentNoticeRedirection(Long recruitmentNoticeId) {
         RecruitmentNotice recruitmentNotice = recruitmentNoticeRepository.findById(recruitmentNoticeId)
                 .orElseThrow(() -> new CommonException(RecruitmentNoticeErrorCode.BAD_REQUEST_RECRUITMENT_NOTICE_NOT_FOUND));
@@ -71,7 +71,6 @@ public class RecruitmentNoticeService {
                 .map(GetRecruitmentNoticeResponseDto::from);
     }
 
-    @Transactional
     public void incrementClickCountByRecruitmentNoticeId(Long recruitmentNoticeId) {
         RecruitmentNotice recruitmentNotice = recruitmentNoticeRepository.findById(recruitmentNoticeId)
                         .orElseGet(() -> null);

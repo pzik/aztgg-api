@@ -1,18 +1,16 @@
 package com.aztgg.api.auth.application;
 
 import com.aztgg.api.auth.application.dto.response.UserResponse;
-import com.aztgg.api.auth.domain.Role;
 import com.aztgg.api.auth.domain.User;
 import com.aztgg.api.auth.domain.UserDomainService;
 import com.aztgg.api.auth.domain.UserRepository;
 import com.aztgg.api.auth.domain.exception.AuthException;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional(readOnly = true)
+@Transactional
 public class UserService {
 
     private final UserRepository userRepository;
@@ -33,7 +31,6 @@ public class UserService {
         return userRepository.existsByUsername(username);
     }
 
-    @Transactional
     public void deleteUser(Long userId) {
         if (!userRepository.existsById(userId)) {
             throw AuthException.userNotFound(userId);

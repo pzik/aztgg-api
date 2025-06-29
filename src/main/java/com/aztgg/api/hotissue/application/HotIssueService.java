@@ -17,19 +17,18 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class HotIssueService {
 
     private final HotIssueRepository hotIssueRepository;
 
-    @Transactional
     public void commentToHotIssue(Long hotIssueId, String ip, CreateCommentToHotIssueRequestDto payload) {
         HotIssue hotIssue = hotIssueRepository.findById(hotIssueId)
                 .orElseThrow(() -> new CommonException(CommonErrorCode.BAD_REQUEST, "invalid hotIssueId"));
         addComment(hotIssue, ip, payload.anonymousName(), payload.content());
     }
 
-    @Transactional
     public void commentToRecruitmentNotice(Long recruitmentNoticeId, String ip, String anonymousName, String content) {
         HotIssue hotIssue = hotIssueRepository.findOneByRecruitmentNoticeId(recruitmentNoticeId)
                 .orElseGet(() -> HotIssue.builder()
@@ -40,6 +39,7 @@ public class HotIssueService {
         hotIssueRepository.save(hotIssue);
     }
 
+    @Transactional(readOnly = true)
     public GetHotIssuesResponseDto getActivatedHotIssues() {
         LocalDateTime now = LocalDateTime.now();
         List<GetHotIssueResponseDto> hotIssues = hotIssueRepository.findAllByStartAtLessThanEqualAndEndAtGreaterThanEqual(now, now)
@@ -49,12 +49,14 @@ public class HotIssueService {
         return new GetHotIssuesResponseDto(hotIssues);
     }
 
+    @Transactional(readOnly = true)
     public GetHotIssueResponseDto getHotIssueById(Long hotIssueId) {
         HotIssue hotIssue = hotIssueRepository.findById(hotIssueId)
                 .orElseThrow(() -> new CommonException(CommonErrorCode.BAD_REQUEST, "not found hotIssue"));
         return GetHotIssueResponseDto.from(hotIssue);
     }
 
+    @Transactional(readOnly = true)
     public GetHotIssueResponseDto getHotIssueByRecruitmentNoticeId(Long recruitmentNoticeId) {
         HotIssue hotIssue = hotIssueRepository.findOneByRecruitmentNoticeId(recruitmentNoticeId)
                 .orElseThrow(() -> new CommonException(CommonErrorCode.BAD_REQUEST, "not found hotIssue"));
