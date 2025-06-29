@@ -30,13 +30,11 @@ public interface UserApi {
         description = "OK",
         content = @Content(schema = @Schema(implementation = UserResponse.class))
     )
-    @GetMapping("")
     ResponseEntity<UserResponse> getCurrentUser();
     @Operation(summary = "사용자 삭제 (관리자 전용)", description = """
             ## API 설명
             관리자가 특정 사용자를 삭제합니다.
             """)
     @ApiResponse(responseCode = "204", description = "NO_CONTENT")
-    @DeleteMapping("/{userId}")
-    ResponseEntity<Void> deleteUser(@PathVariable Long userId);
+    ResponseEntity<Void> deleteUser(Long userId);
 }
