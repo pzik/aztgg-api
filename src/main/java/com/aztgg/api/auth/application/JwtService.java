@@ -1,22 +1,26 @@
-package com.aztgg.api.global.security;
-
-import com.aztgg.api.auth.domain.User;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.oauth2.jwt.*;
-import org.springframework.stereotype.Service;
+package com.aztgg.api.auth.application;
 
 import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.oauth2.jwt.JwsHeader;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.oauth2.jwt.JwtClaimsSet;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.jwt.JwtEncoder;
+import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
+import org.springframework.stereotype.Service;
+
+import com.aztgg.api.auth.domain.User;
+
 @Service
 public class JwtService {
 
     private final JwtEncoder jwtEncoder;
-    private final JwtDecoder jwtDecoder;
     private final String keyId;
 
     @Value("${jwt.access-token}")
@@ -25,9 +29,8 @@ public class JwtService {
     @Value("${jwt.refresh-token.expiration}")
     private Long refreshTokenExpiration;
 
-    public JwtService(JwtEncoder jwtEncoder, JwtDecoder jwtDecoder, @Value("${jwt.key-id}") String keyId) {
+    public JwtService(JwtEncoder jwtEncoder, @Value("${jwt.key-id}") String keyId) {
         this.jwtEncoder = jwtEncoder;
-        this.jwtDecoder = jwtDecoder;
         this.keyId = keyId;
     }
     public String generateToken(User user) {
@@ -59,39 +62,4 @@ public class JwtService {
         return jwtEncoder.encode(JwtEncoderParameters.from(header, claimsSet)).getTokenValue();
     }
 
-    public String extractUsername(String token) {
-        return getJwt(token).getSubject();
-    }
-
-    public List<String> extractRoles(String token) {
-        Jwt jwt = getJwt(token);
-        Object rolesClaim = jwt.getClaim("roles");
-
-        if (rolesClaim instanceof List<?>) {
-            return ((List<?>) rolesClaim).stream()
-                    .map(Object::toString)
-                    .collect(Collectors.toList());
-        } else if (rolesClaim != null) {
-            return List.of(rolesClaim.toString());
-        }
-
-        return List.of();
-    }
-
-    public Boolean isTokenValid(String token) {
-        try {
-            Jwt jwt = getJwt(token);
-            return !isTokenExpired(jwt);
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    private Boolean isTokenExpired(Jwt jwt) {
-        return jwt.getExpiresAt() != null && jwt.getExpiresAt().isBefore(Instant.now());
-    }
-
-    private Jwt getJwt(String token) {
-        return jwtDecoder.decode(token);
-    }
 }
