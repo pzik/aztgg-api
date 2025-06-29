@@ -10,7 +10,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Auth", description = "인증 API")
 @ApiResponses({
@@ -30,11 +29,9 @@ public interface AuthApi {
 
     @Operation(summary = "토큰 갱신", description = "리프레시 토큰으로 액세스 토큰을 갱신합니다.")
     @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = LoginResponse.class)))
-    @PostMapping("/refresh")
     ResponseEntity<LoginResponse> refresh(String refreshToken);
 
     @Operation(summary = "로그아웃", description = "리프레시 토큰을 삭제하고 로그아웃 처리합니다.")
     @ApiResponse(responseCode = "204", description = "NO_CONTENT")
-    @PostMapping("/logout")
     ResponseEntity<Void> logout(String refreshToken);
 }
