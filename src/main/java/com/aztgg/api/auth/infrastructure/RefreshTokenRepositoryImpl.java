@@ -1,6 +1,6 @@
 package com.aztgg.api.auth.infrastructure;
 
-import com.aztgg.api.auth.domain.RefreshTokenManager;
+import com.aztgg.api.auth.domain.RefreshTokenRepository;
 import com.aztgg.api.auth.domain.exception.AuthException;
 import com.aztgg.api.auth.infrastructure.redis.RedisRefreshToken;
 import com.aztgg.api.auth.infrastructure.redis.RedisRefreshTokenRepository;
@@ -10,12 +10,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-public class RefreshTokenService implements RefreshTokenManager {
+public class RefreshTokenRepositoryImpl implements RefreshTokenRepository {
 
     private final RedisRefreshTokenRepository refreshTokenRepository;
     private final long refreshTokenExpirationMillis;
 
-    public RefreshTokenService(
+    public RefreshTokenRepositoryImpl(
         RedisRefreshTokenRepository refreshTokenRepository,
         @Value("${jwt.refresh-token.expiration}") long refreshTokenExpirationMillis
     ) {

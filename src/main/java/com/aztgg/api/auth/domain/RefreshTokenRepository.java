@@ -1,7 +1,7 @@
 package com.aztgg.api.auth.domain;
 
 
-public interface RefreshTokenManager {
+public interface RefreshTokenRepository {
 
 	void save(String username, String refreshToken);
 
