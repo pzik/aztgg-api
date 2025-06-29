@@ -22,19 +22,19 @@ public interface AuthApi {
 
     @Operation(summary = "관리자 로그인", description = "관리자 계정으로 로그인합니다.")
     @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = LoginResponse.class)))
-    ResponseEntity<LoginResponse> adminLogin(@RequestBody AdminLoginRequest loginRequest);
+    ResponseEntity<LoginResponse> adminLogin(AdminLoginRequest loginRequest);
 
     @Operation(summary = "카카오 로그인", description = "카카오 액세스 토큰으로 로그인합니다.")
     @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = LoginResponse.class)))
-    ResponseEntity<LoginResponse> kakaoLogin(@RequestBody KakaoLoginRequest loginRequest);
+    ResponseEntity<LoginResponse> kakaoLogin(KakaoLoginRequest loginRequest);
 
     @Operation(summary = "토큰 갱신", description = "리프레시 토큰으로 액세스 토큰을 갱신합니다.")
     @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = LoginResponse.class)))
     @PostMapping("/refresh")
-    ResponseEntity<LoginResponse> refresh(@CookieValue("refreshToken") String refreshToken);
+    ResponseEntity<LoginResponse> refresh(String refreshToken);
 
     @Operation(summary = "로그아웃", description = "리프레시 토큰을 삭제하고 로그아웃 처리합니다.")
     @ApiResponse(responseCode = "204", description = "NO_CONTENT")
     @PostMapping("/logout")
-    ResponseEntity<Void> logout(@CookieValue("refreshToken") String refreshToken);
+    ResponseEntity<Void> logout(String refreshToken);
 }

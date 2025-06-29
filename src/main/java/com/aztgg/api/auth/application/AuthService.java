@@ -5,8 +5,9 @@ import com.aztgg.api.auth.application.strategy.AuthCredentials;
 import com.aztgg.api.auth.application.strategy.AuthStrategy;
 import com.aztgg.api.auth.domain.RefreshTokenManager;
 import com.aztgg.api.auth.domain.User;
+import com.aztgg.api.auth.domain.UserDomainService;
 import com.aztgg.api.auth.domain.exception.AuthException;
-import com.aztgg.api.global.security.JwtService;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,19 +20,19 @@ import java.util.stream.Collectors;
 @Transactional
 public class AuthService {
 
+    private final UserDomainService userDomainService;
     private final JwtService jwtService;
     private final RefreshTokenManager refreshTokenManager;
     private final RefreshTokenCookieService refreshTokenCookieService;
-    private final UserService userService;
     private final Map<Class<? extends AuthCredentials>, AuthStrategy> strategyMap;
 
-    public AuthService(List<AuthStrategy> authStrategies, JwtService jwtService,
-        RefreshTokenManager refreshTokenManager, RefreshTokenCookieService refreshTokenCookieService,
-        UserService userService) {
-        this.jwtService = jwtService;
+    public AuthService(UserDomainService userDomainService, List<AuthStrategy> authStrategies, JwtService jwtService,
+        RefreshTokenManager refreshTokenManager, RefreshTokenCookieService refreshTokenCookieService
+        ) {
+		this.userDomainService = userDomainService;
+		this.jwtService = jwtService;
         this.refreshTokenManager = refreshTokenManager;
         this.refreshTokenCookieService = refreshTokenCookieService;
-        this.userService = userService;
 
         this.strategyMap = authStrategies.stream()
             .collect(Collectors.toMap(
@@ -57,7 +58,7 @@ public class AuthService {
 
     public LoginResponse refresh(String refreshToken) {
         String username = refreshTokenManager.validateRefreshToken(refreshToken);
-        User user = userService.findByUsername(username);
+        User user = userDomainService.findUserByUsername(username);
 
         String newAccessToken = jwtService.generateToken(user);
         String newRefreshToken = jwtService.generateRefreshToken(user);
