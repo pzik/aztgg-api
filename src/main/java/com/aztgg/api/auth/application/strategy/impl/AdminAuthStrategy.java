@@ -6,6 +6,7 @@ import com.aztgg.api.auth.application.strategy.AuthStrategy;
 import com.aztgg.api.auth.application.strategy.AuthType;
 import com.aztgg.api.auth.domain.Role;
 import com.aztgg.api.auth.domain.User;
+import com.aztgg.api.auth.domain.UserDomainService;
 import com.aztgg.api.auth.domain.exception.AuthErrorCode;
 import com.aztgg.api.auth.domain.exception.AuthException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,11 +15,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class AdminAuthStrategy implements AuthStrategy {
 
-    private final UserService userService;
+    private final UserDomainService userDomainService;
     private final PasswordEncoder passwordEncoder;
 
-    public AdminAuthStrategy(UserService userService, PasswordEncoder passwordEncoder) {
-        this.userService = userService;
+    public AdminAuthStrategy(UserDomainService userDomainService, PasswordEncoder passwordEncoder) {
+        this.userDomainService = userDomainService;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -34,7 +35,7 @@ public class AdminAuthStrategy implements AuthStrategy {
         String username = adminCredentials.getUsername();
         String password = adminCredentials.getPassword();
 
-        User user = userService.findByUsername(username);
+        User user = userDomainService.findUserByUsername(username);
 
         if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new AuthException(AuthErrorCode.INVALID_CREDENTIALS, "Invalid password");

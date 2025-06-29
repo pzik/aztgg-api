@@ -6,6 +6,7 @@ import com.aztgg.api.auth.application.strategy.AuthStrategy;
 import com.aztgg.api.auth.application.strategy.AuthType;
 import com.aztgg.api.auth.domain.Role;
 import com.aztgg.api.auth.domain.User;
+import com.aztgg.api.auth.domain.UserDomainService;
 import com.aztgg.api.auth.domain.exception.AuthErrorCode;
 import com.aztgg.api.auth.domain.exception.AuthException;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,13 +24,15 @@ public class KakaoAuthStrategy implements AuthStrategy {
 
     private final UserService userService;
     private final RestTemplate restTemplate;
+    private final UserDomainService userDomainService;
 
     @Value("${kakao.api.url:https://kapi.kakao.com/v2/user/me}")
     private String kakaoApiUrl;
 
-    public KakaoAuthStrategy(UserService userService, RestTemplate restTemplate) {
+    public KakaoAuthStrategy(UserService userService, RestTemplate restTemplate, UserDomainService userDomainService) {
         this.userService = userService;
         this.restTemplate = restTemplate;
+        this.userDomainService = userDomainService;
     }
 
     @Override
@@ -47,7 +50,7 @@ public class KakaoAuthStrategy implements AuthStrategy {
         String username = "kakao_" + kakaoId;
 
         return userService.existsByUsername(username)
-            ? userService.findByUsername(username)
+            ? userDomainService.findUserByUsername(username)
             : registerNewUser(username, email);
     }
 
@@ -102,7 +105,7 @@ public class KakaoAuthStrategy implements AuthStrategy {
 
     private User registerNewUser(String username, String email) {
         String randomPassword = UUID.randomUUID().toString();
-        return userService.createUser(username, randomPassword, email, Role.USER);
+        return userDomainService.createUser(username, randomPassword, email, Role.USER);
     }
 
     @Override
