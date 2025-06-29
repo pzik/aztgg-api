@@ -14,12 +14,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Objects;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class SubscribeEmailService {
 
     private final SubscribeEmailRepository subscribeEmailRepository;
 
-    @Transactional
     public void createSubscribeEmail(CreateSubscribeEmailRequestDto payload) {
         // 이미 존재하다면 삭제
         delete(payload.email());
@@ -44,7 +44,6 @@ public class SubscribeEmailService {
         subscribeEmailRepository.save(subscribeEmail);
     }
 
-    @Transactional
     public void delete(String email) {
         SubscribeEmail subscribeEmail = subscribeEmailRepository.findByEmail(email)
                 .orElseGet(() -> null);

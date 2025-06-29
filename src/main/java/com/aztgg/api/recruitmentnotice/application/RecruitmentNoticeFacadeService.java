@@ -8,11 +8,13 @@ import com.aztgg.api.recruitmentnotice.application.dto.GetHotIssueByNoticeIdFaca
 import com.aztgg.api.recruitmentnotice.application.dto.GetRecruitmentNoticeResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.Objects;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class RecruitmentNoticeFacadeService {
 

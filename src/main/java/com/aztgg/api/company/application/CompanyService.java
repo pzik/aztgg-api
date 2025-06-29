@@ -22,11 +22,13 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class CompanyService {
 
     private final RecruitmentNoticeRepository recruitmentNoticeRepository;
 
+    @Transactional(readOnly = true)
     public GetCompaniesResponseDto getCompanies(String themeCode) {
         List<GetCompaniesResponseDto.GetCompaniesItemDto> list = Arrays.stream(PredefinedCompany.values())
                 .filter(PredefinedCompany::isNotUnknown)
