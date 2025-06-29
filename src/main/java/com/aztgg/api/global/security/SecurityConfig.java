@@ -36,7 +36,8 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/actuator/**", "/v1/auth/**", "/v1/users", "/v1/users/register", "/docs/**",
                     "/v3/api-docs/**", "/swagger-ui/**", "/swagger-resources/**",
-                    "/webjars/**", "/kakao-login.html", "/kakao-callback.html").permitAll()
+                    "/v1/subscribe-emails/**","/v1/recruitment-notices/**","/v1/hot-issues/**","/v1/company-themes/**",
+                    "/v1/companies/**","/webjars/**", "/kakao-login.html", "/kakao-callback.html").permitAll()
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
             )
@@ -64,13 +65,11 @@ public class SecurityConfig {
 
     private CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of(
-            "http://localhost:8080",
+        config.setAllowedOrigins(List.of("http://localhost:8080",
             "http://localhost:3000",
             "https://api.nklcb.kr",
             "https://www.nklcb.kr",
-            "https://nklcb.kr"
-        ));
+            "https://nklcb.kr"));
         config.addAllowedHeader("*");
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE"));
 
