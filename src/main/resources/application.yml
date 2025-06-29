@@ -1,14 +1,15 @@
 spring:
   profiles:
     active: local
-
+  jpa:
+    open-in-view: false
 logging:
   file:
     path: ./logs
 
 springdoc:
   api-docs:
-    path: /docs # 환경별 경로 보안 검토
+    path: /docs
   swagger-ui:
     path: /docs/index.html
 
@@ -45,7 +46,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3306/aztggdb
     username: root
-    password: root
+    password:
 
   jpa:
     show-sql: true
@@ -59,3 +60,9 @@ spring:
     properties:
       hibernate:
         format_sql: true
+jwt:
+  secret: superlongsecretkeysuperlongsecretkeysuperlongsecretkeysuperlongsecretkeysuperlongsecretkeysuperlongsecretkey
+  key-id: jwt-key
+  access-token: 3600000  # 1시간 (ms)
+  refresh-token:
+    expiration: 1209600000 # 2주 (ms)
