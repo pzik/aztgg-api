@@ -60,14 +60,9 @@ spring:
     properties:
       hibernate:
         format_sql: true
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: http://localhost:8080
-
 jwt:
-  secret: 9a4f2c8d3b7a1e6f5d4c2b8a7f3e9d1c6b4a8f2e7d3c5b9a1f4e8d2c7b3a6f5e9
-  access-token: 3600000
+  secret: superlongsecretkeysuperlongsecretkeysuperlongsecretkeysuperlongsecretkeysuperlongsecretkeysuperlongsecretkey
+  key-id: jwt-key
+  access-token: 3600000  # 1시간 (ms)
   refresh-token:
-    expiration: 86400000
+    expiration: 1209600000 # 2주 (ms)
