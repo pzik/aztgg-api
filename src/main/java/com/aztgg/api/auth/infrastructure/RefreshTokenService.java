@@ -24,7 +24,7 @@ public class RefreshTokenService implements RefreshTokenManager {
     }
 
     public void save(String username, String refreshToken) {
-        refreshTokenRepository.deleteByUsername(username);
+        refreshTokenRepository.deleteByToken(refreshToken);
         RedisRefreshToken token = RedisRefreshToken.createWithToken(username, refreshToken, refreshTokenExpirationMillis);
         refreshTokenRepository.save(token);
     }
