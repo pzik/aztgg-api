@@ -1,7 +1,9 @@
 package com.aztgg.api.auth.application;
 
+import com.aztgg.api.auth.application.dto.response.UserResponse;
 import com.aztgg.api.auth.domain.Role;
 import com.aztgg.api.auth.domain.User;
+import com.aztgg.api.auth.domain.UserDomainService;
 import com.aztgg.api.auth.domain.UserRepository;
 import com.aztgg.api.auth.domain.exception.AuthException;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,43 +16,21 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
-
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    private final UserDomainService userDomainService;
+    public UserService(UserRepository userRepository,
+		UserDomainService userDomainService) {
         this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
+		this.userDomainService = userDomainService;
+	}
 
-    public User getCurrentUser() {
+    public UserResponse getCurrentUser() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        return findByUsername(username);
-    }
-
-    public User findByUsername(String username) {
-        return userRepository.findByUsername(username)
-            .orElseThrow(() -> AuthException.userNotFound(username));
+        User user = userDomainService.findUserByUsername(username);
+        return UserResponse.from(user);
     }
 
     public boolean existsByUsername(String username) {
         return userRepository.existsByUsername(username);
-    }
-
-    @Transactional
-    public User createUser(String username, String password, String email, Role role) {
-        if (userRepository.existsByUsername(username)) {
-            throw AuthException.usernameAlreadyExists();
-        }
-        if (userRepository.existsByEmail(email)) {
-            throw AuthException.emailAlreadyExists();
-        }
-
-        User user = User.createNew(
-            username,
-            passwordEncoder.encode(password),
-            email,
-            role
-        );
-        return userRepository.save(user);
     }
 
     @Transactional

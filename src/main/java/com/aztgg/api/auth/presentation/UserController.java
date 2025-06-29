@@ -1,7 +1,6 @@
 package com.aztgg.api.auth.presentation;
 
 import com.aztgg.api.auth.application.dto.response.UserResponse;
-import com.aztgg.api.auth.domain.User;
 import com.aztgg.api.auth.application.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,8 +16,8 @@ public class UserController implements UserApi {
 
     @GetMapping("")
     public ResponseEntity<UserResponse> getCurrentUser() {
-        User user = userService.getCurrentUser();
-        return ResponseEntity.ok(UserResponse.from(user));
+        UserResponse userResponse = userService.getCurrentUser();
+        return ResponseEntity.ok(userResponse);
     }
 
     @DeleteMapping("/{userId}")
