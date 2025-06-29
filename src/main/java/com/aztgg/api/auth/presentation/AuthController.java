@@ -20,14 +20,14 @@ public class AuthController implements AuthApi {
     @Override
     @PostMapping("/admin/login")
     public ResponseEntity<LoginResponse> adminLogin(@RequestBody AdminLoginRequest loginRequest) {
-        AdminAuthCredentials credentials = AdminAuthCredentials.of(loginRequest.getUsername(), loginRequest.getPassword());
+        AdminAuthCredentials credentials = AdminAuthCredentials.of(loginRequest.username(), loginRequest.password());
         return ResponseEntity.ok(authService.authenticate(credentials));
     }
 
     @Override
     @PostMapping("/kakao/login")
     public ResponseEntity<LoginResponse> kakaoLogin(@RequestBody KakaoLoginRequest loginRequest) {
-        KakaoAuthCredentials credentials = KakaoAuthCredentials.of(loginRequest.getKakaoToken());
+        KakaoAuthCredentials credentials = KakaoAuthCredentials.of(loginRequest.kakaoToken());
         return ResponseEntity.ok(authService.authenticate(credentials));
     }
 
