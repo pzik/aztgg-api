@@ -10,10 +10,11 @@ import com.aztgg.api.auth.domain.UserDomainService;
 import com.aztgg.api.auth.domain.exception.AuthErrorCode;
 import com.aztgg.api.auth.domain.exception.AuthException;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.*;
+import org.springframework.http.MediaType;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.client.RestClient;
 
 import java.util.Map;
 import java.util.Optional;
@@ -23,15 +24,15 @@ import java.util.UUID;
 public class KakaoAuthStrategy implements AuthStrategy {
 
     private final UserService userService;
-    private final RestTemplate restTemplate;
+    private final RestClient restClient;
     private final UserDomainService userDomainService;
 
     @Value("${kakao.api.url:https://kapi.kakao.com/v2/user/me}")
     private String kakaoApiUrl;
 
-    public KakaoAuthStrategy(UserService userService, RestTemplate restTemplate, UserDomainService userDomainService) {
+    public KakaoAuthStrategy(UserService userService, RestClient restClient, UserDomainService userDomainService) {
         this.userService = userService;
-        this.restTemplate = restTemplate;
+        this.restClient = restClient;
         this.userDomainService = userDomainService;
     }
 
@@ -61,28 +62,20 @@ public class KakaoAuthStrategy implements AuthStrategy {
         return kakaoCredentials;
     }
 
-    private Map<String, Object> fetchKakaoUserInfo(String accessToken) {
+    private Map fetchKakaoUserInfo(String accessToken) {
         try {
-            HttpHeaders headers = new HttpHeaders();
-            headers.setBearerAuth(accessToken);
-            headers.setContentType(MediaType.APPLICATION_JSON);
-
-            ResponseEntity<Map> response = restTemplate.exchange(
-                kakaoApiUrl,
-                HttpMethod.GET,
-                new HttpEntity<>(headers),
-                Map.class
-            );
-
-            if (response.getStatusCode() != HttpStatus.OK || response.getBody() == null) {
-                throw new AuthException(AuthErrorCode.INVALID_CREDENTIALS, "Kakao API response is invalid");
-            }
-
-            return response.getBody();
+            return restClient.get()
+                .uri(kakaoApiUrl)
+                .headers(headers -> {
+                    headers.setBearerAuth(accessToken);
+                    headers.setContentType(MediaType.APPLICATION_JSON);
+                })
+                .retrieve()
+                .onStatus(HttpStatus.UNAUTHORIZED::equals, (req, res) -> {
+                    throw new AuthException(AuthErrorCode.INVALID_CREDENTIALS, "Kakao access token is invalid or expired.");
+                })
+                .body(Map.class);
         } catch (HttpClientErrorException e) {
-            if (e.getStatusCode() == HttpStatus.UNAUTHORIZED) {
-                throw new AuthException(AuthErrorCode.INVALID_CREDENTIALS, "Kakao access token is invalid or expired.");
-            }
             throw new AuthException(AuthErrorCode.INVALID_CREDENTIALS, "Kakao API error: " + e.getMessage());
         } catch (Exception e) {
             throw new AuthException(AuthErrorCode.INVALID_CREDENTIALS, "Kakao auth failed: " + e.getMessage());
