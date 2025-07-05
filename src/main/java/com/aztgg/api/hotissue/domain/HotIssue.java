@@ -33,6 +33,7 @@ public class HotIssue {
     @Column(name = "content")
     private String content;
 
+    @OrderBy("createdAt DESC")
     @OneToMany(mappedBy = "hotIssue", cascade = {CascadeType.ALL})
     private List<HotIssueComment> comments = new ArrayList<>();
 
