@@ -41,6 +41,7 @@ public enum PredefinedStandardCategory {
     SECURITY("정보보안", "정보보안, 보안, 이상탐지", null),
     EMBEDDED("임베디드", "Robot, Robot Engineer, iOT, 임베디드 개발", null),
     HR("인사", "인사, 인사팀, 채용, 채용 관리자", null),
+    MARKETING("마케팅", "마케터, 마케팅, Marketing Designer", null),
     ;
 
     private final String korean;
@@ -56,3 +57,4 @@ public enum PredefinedStandardCategory {
         return ETC;
     }
 }
+
