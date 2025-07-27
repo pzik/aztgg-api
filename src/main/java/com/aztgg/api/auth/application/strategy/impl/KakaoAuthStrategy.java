@@ -9,6 +9,8 @@ import com.aztgg.api.auth.domain.User;
 import com.aztgg.api.auth.domain.UserDomainService;
 import com.aztgg.api.auth.domain.exception.AuthErrorCode;
 import com.aztgg.api.auth.domain.exception.AuthException;
+import com.aztgg.api.global.util.NicknameGenerator;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.http.HttpStatus;
@@ -49,10 +51,10 @@ public class KakaoAuthStrategy implements AuthStrategy {
         Long kakaoId = extractKakaoId(userInfo);
         String email = extractEmail(userInfo, kakaoId);
         String username = "kakao_" + kakaoId;
-
+        String nickname = NicknameGenerator.generate();
         return userService.existsByUsername(username)
             ? userDomainService.findUserByUsername(username)
-            : registerNewUser(username, email);
+            : registerNewUser(username, email, nickname);
     }
 
     private KakaoAuthCredentials validateCredentials(AuthCredentials credentials) {
@@ -96,9 +98,9 @@ public class KakaoAuthStrategy implements AuthStrategy {
             .orElse(kakaoId + "@kakao.user");
     }
 
-    private User registerNewUser(String username, String email) {
+    private User registerNewUser(String username, String email,String nickname) {
         String randomPassword = UUID.randomUUID().toString();
-        return userDomainService.createUser(username, randomPassword, email, Role.USER);
+        return userDomainService.createUser(username, randomPassword, email,nickname, Role.USER);
     }
 
     @Override

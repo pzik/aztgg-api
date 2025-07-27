@@ -31,6 +31,9 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
+    @Column(nullable = false, unique = true)
+    private String nickname;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;
@@ -42,18 +45,20 @@ public class User {
     private LocalDateTime updatedAt;
 
     @Builder
-    private User(String username, String password, String email, Role role) {
+    private User(String username, String password, String email, Role role, String nickname) {
         this.username = username;
         this.password = password;
         this.email = email;
+        this.nickname = nickname;
         this.role = role;
     }
 
-    public static User createNew(String username, String password, String email, Role role) {
+    public static User createNew(String username, String password, String email, String nickname, Role role) {
         return User.builder()
                 .username(username)
                 .password(password)
                 .email(email)
+                .nickname(nickname)
                 .role(role)
                 .build();
     }
@@ -75,4 +80,13 @@ public class User {
         return this.username.equals(username);
     }
 
-} 
+    public void changeNickname(String newNickname) {
+        if (newNickname == null || newNickname.trim().isEmpty()) {
+            throw new IllegalArgumentException("Nickname cannot be empty");
+        }
+        if (newNickname.length() > 20) {
+            throw new IllegalArgumentException("Nickname cannot be longer than 20 characters");
+        }
+        this.nickname = newNickname;
+    }
+}

@@ -6,6 +6,7 @@ public record UserResponse(
     Long id,
     String username,
     String email,
+    String nickname,
     String role
 ) {
     public static UserResponse from(User user) {
@@ -13,6 +14,7 @@ public record UserResponse(
             user.getId(),
             user.getUsername(),
             user.getEmail(),
+            user.getNickname(),
             user.getRole().name()
         );
     }
