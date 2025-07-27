@@ -26,7 +26,8 @@ public enum AuthErrorCode implements BaseErrorCode {
 
     /* 409 CONFLICT */
     USERNAME_ALREADY_EXISTS(HttpStatus.CONFLICT, "AUTH_102", "Username already exists"),
-    EMAIL_ALREADY_EXISTS(HttpStatus.CONFLICT, "AUTH_103", "Email already exists");
+    EMAIL_ALREADY_EXISTS(HttpStatus.CONFLICT, "AUTH_103", "Email already exists"),
+    NICKNAME_ALREADY_EXISTS(HttpStatus.CONFLICT, "AUTH_104", "Nickname already exists");
 
 
     private final HttpStatus httpStatus;

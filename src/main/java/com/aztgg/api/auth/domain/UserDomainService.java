@@ -27,7 +27,7 @@ public class UserDomainService {
 
 
     @Transactional
-    public User createUser(String username, String password, String email, Role role) {
+    public User createUser(String username, String password, String email, String nickname, Role role) {
         if (existsByUsername(username)) {
             throw AuthException.usernameAlreadyExists();
         }
@@ -38,6 +38,7 @@ public class UserDomainService {
             username,
             passwordEncoder.encode(password),
             email,
+            nickname,
             role
         );
         return userRepository.save(user);
@@ -50,4 +51,16 @@ public class UserDomainService {
         return userRepository.existsByEmail(email);
     }
 
+    private Boolean existsByNickname(String nickname) {
+        return userRepository.existsByNickname(nickname);
+    }
+
+    @Transactional
+    public User updateNickname(User user, String newNickname) {
+        if (existsByNickname(newNickname) && !user.getNickname().equals(newNickname)) {
+            throw AuthException.nicknameAlreadyExists();
+        }
+        user.changeNickname(newNickname);
+        return userRepository.save(user);
+    }
 }

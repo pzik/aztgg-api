@@ -21,8 +21,7 @@ public class UserService {
 		this.userDomainService = userDomainService;
 	}
 
-    public UserResponse getCurrentUser() {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+    public UserResponse getCurrentUser(String username) {
         User user = userDomainService.findUserByUsername(username);
         return UserResponse.from(user);
     }
@@ -36,5 +35,12 @@ public class UserService {
             throw AuthException.userNotFound(userId);
         }
         userRepository.deleteById(userId);
+    }
+
+    @Transactional
+    public UserResponse updateNickname(String username, String nickname) {
+        User user = userDomainService.findUserByUsername(username);
+        user = userDomainService.updateNickname(user, nickname);
+        return UserResponse.from(user);
     }
 }
