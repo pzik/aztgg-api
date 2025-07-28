@@ -57,7 +57,7 @@ public class UserDomainService {
 
     @Transactional
     public User updateNickname(User user, String newNickname) {
-        if (existsByNickname(newNickname) && !user.getNickname().equals(newNickname)) {
+        if (!user.getNickname().equals(newNickname) && existsByNickname(newNickname)) {
             throw AuthException.nicknameAlreadyExists();
         }
         user.changeNickname(newNickname);

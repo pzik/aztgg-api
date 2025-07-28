@@ -98,9 +98,9 @@ public class KakaoAuthStrategy implements AuthStrategy {
             .orElse(kakaoId + "@kakao.user");
     }
 
-    private User registerNewUser(String username, String email,String nickname) {
+    private User registerNewUser(String username, String email, String nickname) {
         String randomPassword = UUID.randomUUID().toString();
-        return userDomainService.createUser(username, randomPassword, email,nickname, Role.USER);
+        return userDomainService.createUser(username, randomPassword, email, nickname, Role.USER);
     }
 
     @Override

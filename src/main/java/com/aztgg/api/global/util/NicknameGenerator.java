@@ -1,4 +1,5 @@
 package com.aztgg.api.global.util;
+import java.security.SecureRandom;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -19,12 +20,28 @@ public final class NicknameGenerator {
 		"기사", "마법사", "탐험가", "작곡가", "소설가", "화가", "요리사", "발명가", "농부", "정원사",
 		"나무꾼", "연금술사", "요정", "사서", "도서관쥐", "도깨비", "장군", "수호자", "조련사", "모험가"
 	);
+	private static final int RANDOM_SUFFIX_LENGTH = 6;
+	private static final String RANDOM_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
-	private NicknameGenerator() {}
+	private static final SecureRandom random = new SecureRandom();
+
+	private NicknameGenerator() {
+	}
 
 	public static String generate() {
 		String adjective = ADJECTIVES.get(ThreadLocalRandom.current().nextInt(ADJECTIVES.size()));
 		String noun = NOUNS.get(ThreadLocalRandom.current().nextInt(NOUNS.size()));
-		return adjective + " " + noun;
+
+		String randomSuffix = generateRandomString();
+
+		return adjective + " " + noun + " " +randomSuffix;
+	}
+
+	private static String generateRandomString() {
+		StringBuilder sb = new StringBuilder(NicknameGenerator.RANDOM_SUFFIX_LENGTH);
+		for (int i = 0; i < NicknameGenerator.RANDOM_SUFFIX_LENGTH; i++) {
+			sb.append(RANDOM_CHARS.charAt(random.nextInt(RANDOM_CHARS.length())));
+		}
+		return sb.toString();
 	}
 }
