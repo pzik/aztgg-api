@@ -34,13 +34,13 @@ public class UserDomainService {
         if (existsByEmail(email)) {
             throw AuthException.emailAlreadyExists();
         }
-        User user = User.createNew(
-            username,
-            passwordEncoder.encode(password),
-            email,
-            nickname,
-            role
-        );
+        User user = User.builder()
+            .username(username)
+            .password(passwordEncoder.encode(password))
+            .email(email)
+            .nickname(nickname)
+            .role(role)
+            .build();
         return userRepository.save(user);
     }
     private Boolean existsByUsername(String username) {

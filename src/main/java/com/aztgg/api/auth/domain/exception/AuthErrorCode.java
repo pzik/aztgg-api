@@ -9,9 +9,17 @@ import org.springframework.http.HttpStatus;
 @AllArgsConstructor
 public enum AuthErrorCode implements BaseErrorCode {
 
-    /* 401 UNAUTHORIZED */
+    /* 400 BAD REQUEST */
+    INVALID_USERNAME(HttpStatus.BAD_REQUEST, "AUTH_400", "Username must not be null or blank"),
+    INVALID_PASSWORD(HttpStatus.BAD_REQUEST, "AUTH_401", "Password must be at least 20 characters long"),
+    INVALID_EMAIL(HttpStatus.BAD_REQUEST, "AUTH_402", "Email is not valid"),
+    INVALID_NICKNAME(HttpStatus.BAD_REQUEST, "AUTH_403", "Nickname must be at least 2 characters long"),
+    INVALID_ROLE(HttpStatus.BAD_REQUEST, "AUTH_404", "Role must not be null"),
+    NICKNAME_TOO_LONG(HttpStatus.BAD_REQUEST, "AUTH_405", "Nickname cannot be longer than 20 characters"),
+    NICKNAME_EMPTY(HttpStatus.BAD_REQUEST, "AUTH_406", "Nickname cannot be empty"),
+
+    /* 401 UNAUTHORIZED */  
     INVALID_CREDENTIALS(HttpStatus.UNAUTHORIZED, "AUTH_001", "Invalid credentials"),
-    INVALID_PASSWORD(HttpStatus.UNAUTHORIZED, "AUTH_002", "Invalid password"),
     INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "AUTH_003", "Invalid token"),
     EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED, "AUTH_004", "Expired token"),
     TOKEN_VALIDATION_FAILED(HttpStatus.UNAUTHORIZED, "AUTH_005", "Token validation failed"),

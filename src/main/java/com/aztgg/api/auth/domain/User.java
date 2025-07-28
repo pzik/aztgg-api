@@ -10,6 +10,9 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.time.LocalDateTime;
 
+import com.aztgg.api.auth.domain.exception.AuthException;
+import com.aztgg.api.global.validator.EmailValidator;
+import com.aztgg.api.global.validator.NicknameValidator;
 
 @Entity
 @Getter
@@ -45,22 +48,27 @@ public class User {
     private LocalDateTime updatedAt;
 
     @Builder
-    private User(String username, String password, String email, Role role, String nickname) {
+    public User(String username, String password, String email, String nickname, Role role) {
+        if (!NicknameValidator.isValid(nickname)) {
+            throw AuthException.invalidNickname();
+        }
+        if (username == null || username.isBlank()) {
+            throw AuthException.invalidUsername();
+        }
+        if (password == null || password.length() < 20) {
+            throw AuthException.invalidPassword();
+        }
+        if (!EmailValidator.isValid(email)) {
+            throw AuthException.invalidEmail();
+        }
+        if (role == null) {
+            throw AuthException.invalidRole();
+        }
         this.username = username;
         this.password = password;
         this.email = email;
         this.nickname = nickname;
         this.role = role;
-    }
-
-    public static User createNew(String username, String password, String email, String nickname, Role role) {
-        return User.builder()
-                .username(username)
-                .password(password)
-                .email(email)
-                .nickname(nickname)
-                .role(role)
-                .build();
     }
 
     public void changePassword(String newPassword) {
@@ -82,10 +90,10 @@ public class User {
 
     public void changeNickname(String newNickname) {
         if (newNickname == null || newNickname.trim().isEmpty()) {
-            throw new IllegalArgumentException("Nickname cannot be empty");
+            throw AuthException.nicknameEmpty();
         }
         if (newNickname.length() > 20) {
-            throw new IllegalArgumentException("Nickname cannot be longer than 20 characters");
+            throw AuthException.nicknameTooLong();
         }
         this.nickname = newNickname;
     }
