@@ -1,6 +1,8 @@
 package com.aztgg.api.auth.domain;
 
-import com.aztgg.api.auth.domain.exception.AuthException;
+import com.aztgg.api.auth.domain.exception.InvalidEmailDomainException;
+import com.aztgg.api.auth.domain.exception.InvalidNicknameDomainException;
+import com.aztgg.api.auth.domain.exception.InvalidUsernameDomainException;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,32 +24,46 @@ public class UserDomainService {
 
     public User findUserByUsername(String username) {
         return userRepository.findByUsername(username)
-            .orElseThrow(() -> AuthException.userNotFound(username));
+            .orElseThrow(InvalidUsernameDomainException::new);
     }
 
 
     @Transactional
-    public User createUser(String username, String password, String email, Role role) {
+    public User createUser(String username, String password, String email, String nickname, Role role) {
         if (existsByUsername(username)) {
-            throw AuthException.usernameAlreadyExists();
+            throw new InvalidUsernameDomainException();
         }
-        if (existsByEmail(email)) {
-            throw AuthException.emailAlreadyExists();
-        }
-        User user = User.createNew(
-            username,
-            passwordEncoder.encode(password),
-            email,
-            role
-        );
+        User user = User.builder()
+            .username(username)
+            .password(passwordEncoder.encode(password))
+            .email(email)
+            .nickname(nickname)
+            .role(role)
+            .build();
         return userRepository.save(user);
     }
-    private Boolean existsByUsername(String username) {
+    public Boolean existsByUsername(String username) {
         return userRepository.existsByUsername(username);
     }
 
-    private Boolean existsByEmail(String email) {
-        return userRepository.existsByEmail(email);
+    public Boolean existsByNickname(String nickname) {
+        return userRepository.existsByNickname(nickname);
     }
 
+    @Transactional
+    public User updateNickname(User user, String newNickname) {
+        if (!user.getNickname().equals(newNickname) && existsByNickname(newNickname)) {
+            throw new InvalidNicknameDomainException();
+        }
+        user.changeNickname(newNickname);
+        return userRepository.save(user);
+    }
+
+    @Transactional
+    public void deleteUserById(Long userId) {
+        if (!userRepository.existsById(userId)) {
+            throw new InvalidUsernameDomainException();
+        }
+        userRepository.deleteById(userId);
+    }
 }
