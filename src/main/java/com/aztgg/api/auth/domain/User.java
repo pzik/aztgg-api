@@ -10,7 +10,13 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.time.LocalDateTime;
 
-import com.aztgg.api.auth.domain.exception.AuthException;
+import com.aztgg.api.auth.domain.exception.InvalidEmailDomainException;
+import com.aztgg.api.auth.domain.exception.InvalidNicknameDomainException;
+import com.aztgg.api.auth.domain.exception.InvalidPasswordDomainException;
+import com.aztgg.api.auth.domain.exception.InvalidRoleDomainException;
+import com.aztgg.api.auth.domain.exception.InvalidUsernameDomainException;
+import com.aztgg.api.auth.domain.exception.NicknameEmptyDomainException;
+import com.aztgg.api.auth.domain.exception.NicknameTooLongDomainException;
 import com.aztgg.api.global.validator.EmailValidator;
 import com.aztgg.api.global.validator.NicknameValidator;
 
@@ -50,19 +56,19 @@ public class User {
     @Builder
     public User(String username, String password, String email, String nickname, Role role) {
         if (!NicknameValidator.isValid(nickname)) {
-            throw AuthException.invalidNickname();
+            throw new InvalidNicknameDomainException();
         }
         if (username == null || username.isBlank()) {
-            throw AuthException.invalidUsername();
+            throw new InvalidUsernameDomainException();
         }
         if (password == null || password.length() < 20) {
-            throw AuthException.invalidPassword();
+            throw new InvalidPasswordDomainException();
         }
         if (!EmailValidator.isValid(email)) {
-            throw AuthException.invalidEmail();
+            throw new InvalidEmailDomainException();
         }
         if (role == null) {
-            throw AuthException.invalidRole();
+            throw new InvalidRoleDomainException();
         }
         this.username = username;
         this.password = password;
@@ -70,30 +76,16 @@ public class User {
         this.nickname = nickname;
         this.role = role;
     }
-
-    public void changePassword(String newPassword) {
-        this.password = newPassword;
-    }
-
-    public void changeEmail(String newEmail) {
-        this.email = newEmail;
-    }
-
     public boolean isUser() {
         return this.role == Role.USER;
     }
 
-
-    public boolean matchesUsername(String username) {
-        return this.username.equals(username);
-    }
-
     public void changeNickname(String newNickname) {
         if (newNickname == null || newNickname.trim().isEmpty()) {
-            throw AuthException.nicknameEmpty();
+            throw new NicknameEmptyDomainException();
         }
         if (newNickname.length() > 20) {
-            throw AuthException.nicknameTooLong();
+            throw new NicknameTooLongDomainException();
         }
         this.nickname = newNickname;
     }

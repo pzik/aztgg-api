@@ -1,15 +1,16 @@
 package com.aztgg.api.auth.application;
 
 import com.aztgg.api.auth.application.dto.response.LoginResponse;
+import com.aztgg.api.auth.application.exception.UserException;
 import com.aztgg.api.auth.application.strategy.AuthCredentials;
 import com.aztgg.api.auth.application.strategy.AuthStrategy;
 import com.aztgg.api.auth.domain.RefreshTokenRepository;
 import com.aztgg.api.auth.domain.User;
 import com.aztgg.api.auth.domain.UserDomainService;
-import com.aztgg.api.auth.domain.exception.AuthException;
 import com.aztgg.api.global.util.CookieUtil;
 
 import jakarta.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -58,7 +59,7 @@ public class AuthService {
     public LoginResponse authenticate(AuthCredentials credentials) {
         AuthStrategy strategy = strategyMap.get(credentials.getClass());
         if (strategy == null) {
-            throw AuthException.invalidCredentials();
+            throw UserException.unsupportedCredentialsType(credentials.getClass().getName());
         }
 
         User user = strategy.authenticate(credentials);
