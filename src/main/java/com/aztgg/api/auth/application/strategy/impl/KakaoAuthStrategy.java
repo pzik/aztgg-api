@@ -1,14 +1,14 @@
 package com.aztgg.api.auth.application.strategy.impl;
 
-import com.aztgg.api.auth.application.UserService;
+
 import com.aztgg.api.auth.application.strategy.AuthCredentials;
 import com.aztgg.api.auth.application.strategy.AuthStrategy;
 import com.aztgg.api.auth.application.strategy.AuthType;
 import com.aztgg.api.auth.domain.Role;
 import com.aztgg.api.auth.domain.User;
 import com.aztgg.api.auth.domain.UserDomainService;
-import com.aztgg.api.auth.domain.exception.AuthErrorCode;
-import com.aztgg.api.auth.domain.exception.AuthException;
+import com.aztgg.api.auth.application.exception.UserErrorCode;
+import com.aztgg.api.auth.application.exception.UserException;
 import com.aztgg.api.global.util.NicknameGenerator;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -25,15 +25,13 @@ import java.util.UUID;
 @Component
 public class KakaoAuthStrategy implements AuthStrategy {
 
-    private final UserService userService;
     private final RestClient restClient;
     private final UserDomainService userDomainService;
 
     @Value("${kakao.api.url:https://kapi.kakao.com/v2/user/me}")
     private String kakaoApiUrl;
 
-    public KakaoAuthStrategy(UserService userService, RestClient restClient, UserDomainService userDomainService) {
-        this.userService = userService;
+    public KakaoAuthStrategy(RestClient restClient, UserDomainService userDomainService) {
         this.restClient = restClient;
         this.userDomainService = userDomainService;
     }
@@ -52,14 +50,14 @@ public class KakaoAuthStrategy implements AuthStrategy {
         String email = extractEmail(userInfo, kakaoId);
         String username = "kakao_" + kakaoId;
         String nickname = NicknameGenerator.generate();
-        return userService.existsByUsername(username)
+        return userDomainService.existsByUsername(username)
             ? userDomainService.findUserByUsername(username)
             : registerNewUser(username, email, nickname);
     }
 
     private KakaoAuthCredentials validateCredentials(AuthCredentials credentials) {
         if (!(credentials instanceof KakaoAuthCredentials kakaoCredentials)) {
-            throw AuthException.invalidCredentials();
+            throw UserException.invalidCredentials();
         }
         return kakaoCredentials;
     }
@@ -74,13 +72,13 @@ public class KakaoAuthStrategy implements AuthStrategy {
                 })
                 .retrieve()
                 .onStatus(HttpStatus.UNAUTHORIZED::equals, (req, res) -> {
-                    throw new AuthException(AuthErrorCode.INVALID_CREDENTIALS, "Kakao access token is invalid or expired.");
+                    throw new UserException(UserErrorCode.KAKAO_AUTHENTICATION_ERROR, "Kakao access token is invalid or expired.");
                 })
                 .body(Map.class);
         } catch (HttpClientErrorException e) {
-            throw new AuthException(AuthErrorCode.INVALID_CREDENTIALS, "Kakao API error: " + e.getMessage());
+            throw new UserException(UserErrorCode.KAKAO_AUTHENTICATION_ERROR, "Kakao API error: " + e.getMessage());
         } catch (Exception e) {
-            throw new AuthException(AuthErrorCode.INVALID_CREDENTIALS, "Kakao auth failed: " + e.getMessage());
+            throw new UserException(UserErrorCode.KAKAO_AUTHENTICATION_ERROR, "Kakao auth failed: " + e.getMessage());
         }
     }
 
@@ -88,7 +86,7 @@ public class KakaoAuthStrategy implements AuthStrategy {
         return Optional.ofNullable(userInfo.get("id"))
             .filter(id -> id instanceof Number)
             .map(id -> ((Number) id).longValue())
-            .orElseThrow(() -> new AuthException(AuthErrorCode.INVALID_CREDENTIALS, "Kakao ID not found"));
+            .orElseThrow(() -> new UserException(UserErrorCode.KAKAO_AUTHENTICATION_ERROR, "Kakao ID not found"));
     }
 
     private String extractEmail(Map<String, Object> userInfo, Long kakaoId) {
