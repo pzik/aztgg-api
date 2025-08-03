@@ -1,14 +1,13 @@
 package com.aztgg.api.auth.application.strategy.impl;
 
-import com.aztgg.api.auth.application.UserService;
 import com.aztgg.api.auth.application.strategy.AuthCredentials;
 import com.aztgg.api.auth.application.strategy.AuthStrategy;
 import com.aztgg.api.auth.application.strategy.AuthType;
 import com.aztgg.api.auth.domain.Role;
 import com.aztgg.api.auth.domain.User;
 import com.aztgg.api.auth.domain.UserDomainService;
-import com.aztgg.api.auth.domain.exception.AuthErrorCode;
-import com.aztgg.api.auth.domain.exception.AuthException;
+import com.aztgg.api.auth.application.exception.UserErrorCode;
+import com.aztgg.api.auth.application.exception.UserException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -38,11 +37,11 @@ public class AdminAuthStrategy implements AuthStrategy {
         User user = userDomainService.findUserByUsername(username);
 
         if (!passwordEncoder.matches(password, user.getPassword())) {
-            throw new AuthException(AuthErrorCode.INVALID_CREDENTIALS, "Invalid password");
+            throw new UserException(UserErrorCode.INVALID_CREDENTIALS, "Invalid password");
         }
 
         if (user.getRole() != Role.ADMIN) {
-            throw new AuthException(AuthErrorCode.INSUFFICIENT_PERMISSIONS, "User is not an admin");
+            throw new UserException(UserErrorCode.INSUFFICIENT_PERMISSIONS, "User is not an admin");
         }
 
         return user;
@@ -50,7 +49,7 @@ public class AdminAuthStrategy implements AuthStrategy {
 
     private AdminAuthCredentials validateCredentials(AuthCredentials credentials) {
         if (!(credentials instanceof AdminAuthCredentials adminCredentials)) {
-            throw AuthException.invalidCredentials();
+            throw UserException.invalidCredentials();
         }
         return adminCredentials;
     }

@@ -1,7 +1,7 @@
 package com.aztgg.api.auth.infrastructure;
 
 import com.aztgg.api.auth.domain.RefreshTokenRepository;
-import com.aztgg.api.auth.domain.exception.AuthException;
+import com.aztgg.api.auth.domain.exception.InvalidTokenDomainException;
 import com.aztgg.api.auth.infrastructure.redis.RedisRefreshToken;
 import com.aztgg.api.auth.infrastructure.redis.RedisRefreshTokenRepository;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,7 +31,7 @@ public class RefreshTokenRepositoryImpl implements RefreshTokenRepository {
 
     public String validateRefreshToken(String token) {
         return refreshTokenRepository.findById(token)
-            .orElseThrow(AuthException::invalidToken)
+            .orElseThrow(InvalidTokenDomainException::new)
             .getUsername();
     }
 

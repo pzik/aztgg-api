@@ -1,24 +1,21 @@
-package com.aztgg.api.auth.application;
+package com.aztgg.api.auth.domain;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.oauth2.jwt.JwsHeader;
+import org.springframework.security.oauth2.jwt.JwtClaimsSet;
+import org.springframework.security.oauth2.jwt.JwtEncoder;
+import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.oauth2.jwt.JwsHeader;
-import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.security.oauth2.jwt.JwtClaimsSet;
-import org.springframework.security.oauth2.jwt.JwtDecoder;
-import org.springframework.security.oauth2.jwt.JwtEncoder;
-import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
-import org.springframework.stereotype.Service;
-
-import com.aztgg.api.auth.domain.User;
 
 @Service
-public class JwtService {
+@Transactional(readOnly = true)
+public class JwtTokenDomainService {
 
     private final JwtEncoder jwtEncoder;
     private final String keyId;
@@ -29,11 +26,17 @@ public class JwtService {
     @Value("${jwt.refresh-token.expiration}")
     private Long refreshTokenExpiration;
 
-    public JwtService(JwtEncoder jwtEncoder, @Value("${jwt.key-id}") String keyId) {
+    public JwtTokenDomainService(JwtEncoder jwtEncoder,
+                                  @Value("${jwt.key-id}") String keyId,
+                                  @Value("${jwt.access-token}") Long accessTokenExpiration,
+                                  @Value("${jwt.refresh-token.expiration}") Long refreshTokenExpiration) {
         this.jwtEncoder = jwtEncoder;
         this.keyId = keyId;
+        this.accessTokenExpiration = accessTokenExpiration;
+        this.refreshTokenExpiration = refreshTokenExpiration;
     }
-    public String generateToken(User user) {
+
+    public String generateAccessToken(User user) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("roles", List.of(user.getRole().name()));
         return createToken(claims, user.getUsername(), accessTokenExpiration);
@@ -61,5 +64,4 @@ public class JwtService {
 
         return jwtEncoder.encode(JwtEncoderParameters.from(header, claimsSet)).getTokenValue();
     }
-
 }
