@@ -1,18 +1,15 @@
 package com.aztgg.api.recruitmentnotice.infrastructure.db;
 
+import com.aztgg.api.global.util.QuerydslUtil;
 import com.aztgg.api.recruitmentnotice.domain.QRecruitmentNotice;
 import com.aztgg.api.recruitmentnotice.domain.RecruitmentNotice;
 import com.aztgg.api.recruitmentnotice.domain.RecruitmentNoticeCustomRepository;
 import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.types.Order;
-import com.querydsl.core.types.OrderSpecifier;
-import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Repository;
@@ -84,7 +81,7 @@ public class RecruitmentNoticeRepositoryImpl extends QuerydslRepositorySupport i
                 .where(qRecruitmentNotice.recruitmentNoticeId.in(pagingIds));
 
         // 정렬 조건 적용
-        addOrderBy(qRecruitmentNotice, query, pageable.getSort());
+        QuerydslUtil.addOrderBy(RecruitmentNotice.class, qRecruitmentNotice, query, pageable.getSort());
 
         return new PageImpl<>(query.fetch(), pageable, totalCount);
     }
@@ -112,15 +109,5 @@ public class RecruitmentNoticeRepositoryImpl extends QuerydslRepositorySupport i
         }
 
         return ids.stream().map(Long::parseLong).collect(Collectors.toList());
-    }
-
-    private void addOrderBy(QRecruitmentNotice qRecruitmentNotice, JPAQuery<RecruitmentNotice> query, Sort sort) {
-        for (Sort.Order order : sort) {
-            PathBuilder pathBuilder = new PathBuilder(RecruitmentNotice.class, qRecruitmentNotice.getMetadata().getName());
-            query.orderBy(new OrderSpecifier<>(
-                    order.isAscending() ? Order.ASC : Order.DESC,
-                    pathBuilder.get(order.getProperty())
-            ));
-        }
     }
 }

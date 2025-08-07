@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class HotIssueService {
+public class HotIssueService { // TODO : 최신 컨벤션 형태로 리팩토링
 
     private final HotIssueRepository hotIssueRepository;
 

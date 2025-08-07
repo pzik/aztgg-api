@@ -10,6 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 
+import java.util.Collection;
+import java.util.List;
+
 @Service
 @Transactional(readOnly = true)
 public class UserDomainService {
@@ -27,6 +30,9 @@ public class UserDomainService {
             .orElseThrow(InvalidUsernameDomainException::new);
     }
 
+    public List<User> findAllUsersByIds(Collection<Long> userIds) {
+        return userRepository.findAllByIdIn(userIds);
+    }
 
     @Transactional
     public User createUser(String username, String password, String email, String nickname, Role role) {
