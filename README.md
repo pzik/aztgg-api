@@ -5,4 +5,4 @@
 * scheduler: https://github.com/pzik/aztgg-scheduler
 
 ## Architecture
-![acrh.png](docs%2Facrh.png)
+![arch.png](docs%2Farch.png)

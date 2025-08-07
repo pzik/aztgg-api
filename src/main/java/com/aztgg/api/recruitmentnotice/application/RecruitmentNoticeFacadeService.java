@@ -16,7 +16,7 @@ import java.util.Objects;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class RecruitmentNoticeFacadeService {
+public class RecruitmentNoticeFacadeService { // TODO : 최신 컨벤션 형태로 리팩토링
 
     private final HotIssueService hotIssueService;
     private final RecruitmentNoticeService recruitmentNoticeService;

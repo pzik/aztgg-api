@@ -54,4 +54,19 @@ public class GlobalExceptionHandler {
         AppLogger.errorLog(ex.getMessage(), ex);
         return new ResponseEntity<>(error, errorCode.getHttpStatus());
     }
+
+    // 핸들링되지 않는 도메인 익셉션은 5xx
+    @ExceptionHandler(DomainException.class)
+    protected ResponseEntity<ErrorResponse> handleDomainException(DomainException ex) {
+        BaseErrorCode errorCode = CommonErrorCode.INTERNAL_SERVER_ERROR;
+
+        ErrorResponse error = ErrorResponse.builder()
+                .status(errorCode.getHttpStatus().value())
+                .message(ex.getMessage())
+                .code(errorCode.getCode())
+                .build();
+
+        AppLogger.errorLog(ex.getMessage(), ex);
+        return new ResponseEntity<>(error, errorCode.getHttpStatus());
+    }
 }
