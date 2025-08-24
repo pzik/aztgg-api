@@ -1,6 +1,7 @@
 package com.aztgg.api.hotissue.presentation;
 
-import com.aztgg.api.hotissue.application.HotIssueService;
+import com.aztgg.api.hotissue.application.HotIssueFacadeService;
+import com.aztgg.api.hotissue.domain.HotIssueDomainService;
 import com.aztgg.api.hotissue.application.dto.CreateCommentToHotIssueRequestDto;
 import com.aztgg.api.hotissue.application.dto.GetHotIssueResponseDto;
 import com.aztgg.api.hotissue.application.dto.GetHotIssuesResponseDto;
@@ -15,12 +16,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/v1/hot-issues")
 public class HotIssueController implements HotIssueApi {
 
-    private final HotIssueService hotIssueService;
+    private final HotIssueFacadeService hotIssueFacadeService;
 
     @Override
     @GetMapping("/{hotIssueId}")
     public GetHotIssueResponseDto getHotIssue(@PathVariable("hotIssueId") Long hotIssueId) {
-        return hotIssueService.getHotIssueById(hotIssueId);
+        return hotIssueFacadeService.getHotIssueById(hotIssueId);
     }
 
     @Override
@@ -29,12 +30,12 @@ public class HotIssueController implements HotIssueApi {
     public void addComment(HttpServletRequest httpServletRequest, @PathVariable("hotIssueId") Long hotIssueId, @RequestBody @Valid CreateCommentToHotIssueRequestDto payload) {
         String ip = httpServletRequest.getHeader("x-forwarded-for") != null ?
                 httpServletRequest.getHeader("x-forwarded-for").split(",")[0] : httpServletRequest.getRemoteAddr();
-        hotIssueService.commentToHotIssue(hotIssueId, ip, payload);
+        hotIssueFacadeService.commentToHotIssue(hotIssueId, ip, payload);
     }
 
     @Override
     @GetMapping("/activated-list")
     public GetHotIssuesResponseDto getActivateHotIssues() {
-        return hotIssueService.getActivatedHotIssues();
+        return hotIssueFacadeService.getActivatedHotIssues();
     }
 }

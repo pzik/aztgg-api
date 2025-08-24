@@ -64,8 +64,14 @@ public class HotIssue {
         }
     }
 
-    public void addComment(HotIssueComment comment) {
-        this.comments.add(comment);
-        comment.updateParent(this);
+    public void addComment(String ip, String anonymousName, String content) {
+        HotIssueComment hotIssueComment = HotIssueComment.builder()
+                .ip(ip)
+                .content(content)
+                .anonymousName(anonymousName)
+                .build();
+
+        this.comments.add(hotIssueComment);
+        hotIssueComment.updateParent(this);
     }
 }
