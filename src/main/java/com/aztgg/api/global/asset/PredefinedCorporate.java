@@ -1,5 +1,6 @@
 package com.aztgg.api.global.asset;
 
+import com.aztgg.api.global.logging.AppLogger;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -23,6 +24,7 @@ public enum PredefinedCorporate {
     TOSS_PLACE("토스플레이스", PredefinedCompany.TOSS, "토스플레이스"),
     TOSS_INSURANCE("토스인슈어런스", PredefinedCompany.TOSS, "토스인슈어런스"),
     TOSS_INVEST("토스증권", PredefinedCompany.TOSS, "토스증권"),
+    TOSS_INVEST_TEAM("토스증권팀", PredefinedCompany.TOSS, "토스증권"),
     TOSS_CX("토스씨엑스", PredefinedCompany.TOSS, "토스씨엑스"),
     TOSS_BANK("토스뱅크", PredefinedCompany.TOSS, "토스뱅크"),
     TOSS_INCOME("토스인컴", PredefinedCompany.TOSS, "토스인컴"),
@@ -124,6 +126,7 @@ public enum PredefinedCorporate {
                 return value;
             }
         }
+        AppLogger.warnLog("invalid predefined corp id, origin = %s", id);
         return UNKNOWN;
     }
 
@@ -136,4 +139,3 @@ public enum PredefinedCorporate {
         return UNKNOWN;
     }
 }
-

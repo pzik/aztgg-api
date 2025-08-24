@@ -2,7 +2,8 @@ package com.aztgg.api.recruitmentnotice.application;
 
 import com.aztgg.api.global.exception.CommonErrorCode;
 import com.aztgg.api.global.exception.CommonException;
-import com.aztgg.api.hotissue.application.HotIssueService;
+import com.aztgg.api.hotissue.domain.HotIssue;
+import com.aztgg.api.hotissue.domain.HotIssueDomainService;
 import com.aztgg.api.recruitmentnotice.application.dto.CreateHotIssueCommentByRecruitmentNoticeIdFacadeRequestDto;
 import com.aztgg.api.recruitmentnotice.application.dto.GetHotIssueByNoticeIdFacadeResponseDto;
 import com.aztgg.api.recruitmentnotice.application.dto.GetRecruitmentNoticeResponseDto;
@@ -18,7 +19,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class RecruitmentNoticeFacadeService { // TODO : 최신 컨벤션 형태로 리팩토링
 
-    private final HotIssueService hotIssueService;
+    private final HotIssueDomainService hotIssueDomainService;
     private final RecruitmentNoticeService recruitmentNoticeService;
 
     public void createComment(Long recruitmentNoticeId, String ip, CreateHotIssueCommentByRecruitmentNoticeIdFacadeRequestDto payload) {
@@ -32,14 +33,16 @@ public class RecruitmentNoticeFacadeService { // TODO : 최신 컨벤션 형태�
             throw new CommonException(CommonErrorCode.BAD_REQUEST, "invalid recruitmentNoticeId");
         }
 
-        hotIssueService.commentToRecruitmentNotice(recruitmentNoticeId, ip, payload.anonymousName(), payload.content());
+        HotIssue hotIssue = hotIssueDomainService.findHotIssueByRecruitmentNoticeId(recruitmentNoticeId)
+                .orElseGet(() -> HotIssue.builder()
+                        .recruitmentNoticeId(recruitmentNoticeId)
+                        .build());
+        hotIssueDomainService.commentToRecruitmentNotice(hotIssue, ip, payload.anonymousName(), payload.content());
     }
 
     public GetHotIssueByNoticeIdFacadeResponseDto getHotIssueByNoticeId(Long recruitmentNoticeId) {
-        try {
-            return GetHotIssueByNoticeIdFacadeResponseDto.from(hotIssueService.getHotIssueByRecruitmentNoticeId(recruitmentNoticeId));
-        } catch (CommonException e) {
-            return GetHotIssueByNoticeIdFacadeResponseDto.empty(recruitmentNoticeId);
-        }
+        return hotIssueDomainService.findHotIssueByRecruitmentNoticeId(recruitmentNoticeId)
+                .map(GetHotIssueByNoticeIdFacadeResponseDto::from)
+                .orElseGet(() -> GetHotIssueByNoticeIdFacadeResponseDto.empty(recruitmentNoticeId));
     }
 }

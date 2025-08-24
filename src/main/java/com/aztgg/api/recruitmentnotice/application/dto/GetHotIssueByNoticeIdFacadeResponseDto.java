@@ -1,6 +1,7 @@
 package com.aztgg.api.recruitmentnotice.application.dto;
 
-import com.aztgg.api.hotissue.application.dto.GetHotIssueResponseDto;
+import com.aztgg.api.hotissue.domain.HotIssue;
+import com.aztgg.api.hotissue.domain.HotIssueComment;
 import lombok.Builder;
 
 import java.time.LocalDateTime;
@@ -19,26 +20,26 @@ public record GetHotIssueByNoticeIdFacadeResponseDto(Long hotIssueId,
                                                 String content,
                                                 LocalDateTime createdAt,
                                                 LocalDateTime modifiedAt) {
-        public static GetHotIssueByNoticeIdResponseCommentDto from(GetHotIssueResponseDto.GetHotIssueResponseCommentDto commentDto) {
+        public static GetHotIssueByNoticeIdResponseCommentDto from(HotIssueComment comment) {
             return GetHotIssueByNoticeIdResponseCommentDto.builder()
-                    .hotIssueCommentId(commentDto.hotIssueCommentId())
-                    .maskedIp(commentDto.maskedIp())
-                    .anonymousName(commentDto.anonymousName())
-                    .content(commentDto.content())
-                    .createdAt(commentDto.createdAt())
-                    .modifiedAt(commentDto.modifiedAt())
+                    .hotIssueCommentId(comment.getHotIssueCommentId())
+                    .maskedIp(comment.getMaskedIp())
+                    .anonymousName(comment.getAnonymousName())
+                    .content(comment.getContent())
+                    .createdAt(comment.getCreatedAt())
+                    .modifiedAt(comment.getModifiedAt())
                     .build();
         }
     }
 
-    public static GetHotIssueByNoticeIdFacadeResponseDto from(GetHotIssueResponseDto dto) {
-        List<GetHotIssueByNoticeIdResponseCommentDto> list = dto.comments().stream()
+    public static GetHotIssueByNoticeIdFacadeResponseDto from(HotIssue hotIssue) {
+        List<GetHotIssueByNoticeIdResponseCommentDto> list = hotIssue.getComments().stream()
                 .map(GetHotIssueByNoticeIdResponseCommentDto::from)
                 .toList();
 
         return GetHotIssueByNoticeIdFacadeResponseDto.builder()
-                .hotIssueId(dto.hotIssueId())
-                .recruitmentNoticeId(dto.recruitmentNoticeId())
+                .hotIssueId(hotIssue.getHotIssueId())
+                .recruitmentNoticeId(hotIssue.getRecruitmentNoticeId())
                 .comments(list)
                 .build();
     }
