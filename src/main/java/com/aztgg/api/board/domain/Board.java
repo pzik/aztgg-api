@@ -26,6 +26,7 @@ public class Board {
     @Column(name = "userId")
     private Long userId;
 
+    @OrderBy("createdAt DESC")
     @OneToMany(mappedBy = "board", cascade = {CascadeType.ALL}, orphanRemoval = true)
     private List<BoardComment> comments = new ArrayList<>();
 
