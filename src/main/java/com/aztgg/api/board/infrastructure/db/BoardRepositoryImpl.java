@@ -43,7 +43,7 @@ public class BoardRepositoryImpl extends QuerydslRepositorySupport implements Bo
         BooleanBuilder whereBooleanBuilder = new BooleanBuilder();
 
         if(StringUtils.hasText(searchWord)) {
-            whereBooleanBuilder.and(qBoard.title.like(searchWord));
+            whereBooleanBuilder.and(qBoard.title.contains(searchWord));
         }
 
         // total count query

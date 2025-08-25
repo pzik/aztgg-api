@@ -2,6 +2,7 @@ package com.aztgg.api.global.exception;
 
 import com.aztgg.api.global.logging.AppLogger;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -68,5 +69,19 @@ public class GlobalExceptionHandler {
 
         AppLogger.errorLog(ex.getMessage(), ex);
         return new ResponseEntity<>(error, errorCode.getHttpStatus());
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    protected ResponseEntity<ErrorResponse> handleAccessDeniedException(AccessDeniedException ex) {
+        CommonErrorCode commonErrorCode = CommonErrorCode.FORBIDDEN;
+
+        ErrorResponse error = ErrorResponse.builder()
+                .status(commonErrorCode.getHttpStatus().value())
+                .message(ex.getMessage())
+                .code(commonErrorCode.getCode())
+                .build();
+
+        AppLogger.errorLog(ex.getMessage(), ex);
+        return new ResponseEntity<>(error, commonErrorCode.getHttpStatus());
     }
 }
