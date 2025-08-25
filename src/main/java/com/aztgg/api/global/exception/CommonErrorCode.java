@@ -12,6 +12,7 @@ public enum CommonErrorCode implements BaseErrorCode {
     REQUEST_PARAMETER_BIND_FAILED(HttpStatus.BAD_REQUEST, "COMMON_002", "PARAMETER_BIND_FAILED"),
     BAD_REQUEST(HttpStatus.BAD_REQUEST, "COMMON_003", "BAD REQUEST"),
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "COMMON_004", "INTERNAL SERVER ERROR"),
+    FORBIDDEN(HttpStatus.FORBIDDEN, "COMMON_005", "FORBIDDEN"),
     ;
 
     private final HttpStatus httpStatus;
