@@ -31,6 +31,8 @@ management:
       exposure:
         include: "health"
 
+page:
+  error: https://nklcb.kr/error
 ---
 spring:
   config:
