@@ -3,9 +3,6 @@ spring:
     active: local
   jpa:
     open-in-view: false
-logging:
-  file:
-    path: ./logs
 
 springdoc:
   api-docs:
