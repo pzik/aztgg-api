@@ -77,6 +77,7 @@ public enum PredefinedCorporate {
 
     // 넥슨
     NEXON_KOREA("넥슨코리아", PredefinedCompany.NEXON, "넥슨코리아"),
+    NEXON_HQ("넥슨에이치큐", PredefinedCompany.NEXON, "넥슨에이치큐"),
     NEXON_NEOPLE("네오플", PredefinedCompany.NEXON, "네오플"),
     NEXON_GAMES("넥슨게임즈", PredefinedCompany.NEXON, "넥슨게임즈"),
     NEXON_UNIVERSE("넥슨유니버스", PredefinedCompany.NEXON, "넥슨유니버스"),
@@ -126,7 +127,7 @@ public enum PredefinedCorporate {
                 return value;
             }
         }
-        AppLogger.warnLog("invalid predefined corp id, origin = %s", id);
+        AppLogger.warnLog("invalid predefined corp id, origin = " + id);
         return UNKNOWN;
     }
 
