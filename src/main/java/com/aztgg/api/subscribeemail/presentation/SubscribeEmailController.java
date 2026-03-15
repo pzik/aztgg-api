@@ -2,6 +2,7 @@ package com.aztgg.api.subscribeemail.presentation;
 
 import com.aztgg.api.subscribeemail.application.SubscribeEmailService;
 import com.aztgg.api.subscribeemail.application.dto.CreateSubscribeEmailRequestDto;
+import com.aztgg.api.subscribeemail.application.dto.GetSubscribeEmailCountResponseDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,5 +27,11 @@ public class SubscribeEmailController implements SubscribeEmailApi {
     public String unsubscribeEmail(@PathVariable String email) {
         subscribeEmailService.delete(email);
         return email + ", UNSUBSCRIBE SUCCESS";
+    }
+
+    @Override
+    @GetMapping("/count")
+    public GetSubscribeEmailCountResponseDto getSubscribeEmailCount() {
+        return subscribeEmailService.getSubscribeEmailCount();
     }
 }
