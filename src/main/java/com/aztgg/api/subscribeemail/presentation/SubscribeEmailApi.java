@@ -1,6 +1,7 @@
 package com.aztgg.api.subscribeemail.presentation;
 
 import com.aztgg.api.subscribeemail.application.dto.CreateSubscribeEmailRequestDto;
+import com.aztgg.api.subscribeemail.application.dto.GetSubscribeEmailCountResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -43,4 +44,15 @@ public interface SubscribeEmailApi {
                     description = "OK"),
     })
     String unsubscribeEmail(String email);
+
+    @Operation(tags = {"SubscribeEmail"}, summary = "구독자 수 조회", description = """
+            ## API 설명
+            현재 이메일 구독자 수를 조회합니다.
+            """)
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "OK"),
+    })
+    GetSubscribeEmailCountResponseDto getSubscribeEmailCount();
 }

@@ -4,6 +4,7 @@ import com.aztgg.api.global.asset.PredefinedStandardCategory;
 import com.aztgg.api.global.exception.CommonErrorCode;
 import com.aztgg.api.global.exception.CommonException;
 import com.aztgg.api.subscribeemail.application.dto.CreateSubscribeEmailRequestDto;
+import com.aztgg.api.subscribeemail.application.dto.GetSubscribeEmailCountResponseDto;
 import com.aztgg.api.subscribeemail.domain.SubscribeEmail;
 import com.aztgg.api.subscribeemail.domain.SubscribeEmailCategory;
 import com.aztgg.api.subscribeemail.domain.SubscribeEmailRepository;
@@ -19,6 +20,11 @@ import java.util.Objects;
 public class SubscribeEmailService {
 
     private final SubscribeEmailRepository subscribeEmailRepository;
+
+    @Transactional(readOnly = true)
+    public GetSubscribeEmailCountResponseDto getSubscribeEmailCount() {
+        return new GetSubscribeEmailCountResponseDto(subscribeEmailRepository.count());
+    }
 
     public void createSubscribeEmail(CreateSubscribeEmailRequestDto payload) {
         // 이미 존재하다면 삭제
