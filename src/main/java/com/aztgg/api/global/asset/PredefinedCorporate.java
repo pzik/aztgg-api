@@ -74,6 +74,7 @@ public enum PredefinedCorporate {
     NAVER_WEBTOON("NAVER WEBTOON", PredefinedCompany.NAVER, "네이버 웹툰"),
     NAVER_FINANCIAL("NAVER FINANCIAL", PredefinedCompany.NAVER, "네이버 파이낸셜"),
     NAVER_IANDS("NAVER I&S", PredefinedCompany.NAVER, "네이버 아이앤애스"),
+    NAVER_KREAM("KREAM", PredefinedCompany.NAVER, "크림"),
 
     // 넥슨
     NEXON_KOREA("넥슨코리아", PredefinedCompany.NEXON, "넥슨코리아"),
