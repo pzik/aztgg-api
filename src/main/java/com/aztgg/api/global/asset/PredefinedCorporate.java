@@ -29,6 +29,7 @@ public enum PredefinedCorporate {
     TOSS_BANK("토스뱅크", PredefinedCompany.TOSS, "토스뱅크"),
     TOSS_INCOME("토스인컴", PredefinedCompany.TOSS, "토스인컴"),
     TOSS_INSIGHT("토스인사이트", PredefinedCompany.TOSS, "토스인사이트"),
+    TOSS_COMMUNITY("토스커뮤니티", PredefinedCompany.TOSS, "토스커뮤니티"),
 
     // 우아한형제들
     BAEMIN("BAEMIN", PredefinedCompany.WOOWAHAN, "배달의민족"),
@@ -92,6 +93,7 @@ public enum PredefinedCorporate {
     NEXON_NXC("엔엑스씨", PredefinedCompany.NEXON, "엔엑스씨"),
     NEXON_MINT("민트로켓", PredefinedCompany.NEXON, "민트로켓"),
     NEXON_SPACE("넥슨스페이스", PredefinedCompany.NEXON, "넥슨스페이스"),
+    NEXON_DILLO("딜로퀘스트", PredefinedCompany.NEXON, "딜로퀘스트"),
 
     // 크래프톤
     KRAFTON("KRAFTON", PredefinedCompany.KRAFTON, "크래프톤"),
@@ -108,6 +110,12 @@ public enum PredefinedCorporate {
     KRAFTON_FLYWAY("FlywayGames", PredefinedCompany.KRAFTON, "Flyway Games"),
     KRAFTON_OVERDARE("OVERDARE", PredefinedCompany.KRAFTON, "OVERDARE"),
     KRAFTON_TANGO("TangoGameworks", PredefinedCompany.KRAFTON, "탱고게임웍스"),
+    KRAFTON_JOFSOFT("JOFSOFT", PredefinedCompany.KRAFTON, "JOFSOFT"),
+    KRAFTON_DREAMOTION("Dreamotion", PredefinedCompany.KRAFTON, "Dreamotion"),
+    KRAFTON_EHG("EleventhHourGames", PredefinedCompany.KRAFTON, "Eleventh Hour Games"),
+    KRAFTON_LUDO("LudoRobotics", PredefinedCompany.KRAFTON, "Ludo Robotics"),
+    KRAFTON_LOONSHOTGAMES("LoonshotGames", PredefinedCompany.KRAFTON, "Loonshot Games"),
+    KRAFTON_9B("9BStudio", PredefinedCompany.KRAFTON, "9B Studio"),
 
     // 두나무
     DUNAMU("DUNAMU", PredefinedCompany.DUNAMU, "두나무"),
